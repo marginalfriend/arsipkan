@@ -11,6 +11,7 @@ export async function getAuthHeaderBearer() {
 	}
 
 	return new Headers({
-		"Authorization": "Bearer " + session.accessToken
+		"Authorization" : "Bearer " + session.accessToken,
+		"Content-Type" : "application/json"
 	})
 }

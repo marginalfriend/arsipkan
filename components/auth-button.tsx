@@ -15,7 +15,7 @@ export default function AuthButton() {
 		}
 	} else {
 		return (
-			<div className="flex flex-row justify-start align-middle w-full gap-6 px-10">
+			<div className="flex flex-row justify-start align-middle gap-6">
 				<Button onClick={() => signIn()}>Sign in</Button>
 			</div>
 		)
