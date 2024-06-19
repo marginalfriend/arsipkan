@@ -73,4 +73,9 @@
     body {
       @apply bg-background text-foreground;
     }
+
+	h3 {
+		font-size: large;
+		font-weight: 500;
+	}
   }

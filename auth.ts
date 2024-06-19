@@ -2,16 +2,11 @@ import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next
 import NextAuth, { AuthOptions, NextAuthOptions, getServerSession } from "next-auth"
 import Google from "next-auth/providers/google"
 
-const googleClientId = process.env.GOOGLE_CLIENT_ID
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
-
-if (googleClientId == undefined || googleClientSecret == undefined) throw "Google credentials not found"
-
 export const authOptions: AuthOptions = {
 	providers: [
 		Google({
-			clientId: googleClientId,
-			clientSecret: googleClientSecret,
+			clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
 			authorization : {
 				url: "https://accounts.google.com/o/oauth2/auth",
 				params : {

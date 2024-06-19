@@ -8,9 +8,8 @@ export default function AuthButton() {
     if (session) {
 		if (session.user) {
 			return (
-				<div className="flex flex-row justify-start align-middle w-full gap-6 px-10">
+				<div className="flex flex-row justify-start align-middle gap-6">
 					<Button onClick={() => signOut()}>Sign out</Button>
-					<p className="text-center align-middle">Signed in as {session.user.name}</p>
 				</div>
 			)
 		}
@@ -18,7 +17,6 @@ export default function AuthButton() {
 		return (
 			<div className="flex flex-row justify-start align-middle w-full gap-6 px-10">
 				<Button onClick={() => signIn()}>Sign in</Button>
-				<p>Not signed in</p>
 			</div>
 		)
 	}
