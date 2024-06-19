@@ -22,20 +22,21 @@ import { DatePickerFormField } from "./date-picker-form-field"
 const FormSchema = z.object({
 	diterimaDari		: z.string(),
 	nomorKwitansi		: z.string(),
-	uangSejumlah		: z.number(),
-	realCost			: z.number(),
+	uangSejumlah		: z.string(),
+	realCost			: z.string(),
 	untukPembayaran		: z.string(),
 	yangMenerima		: z.string(),
 	nomorSpk			: z.string(),
 	kota				: z.string(),
-	// tanggalTransaksi	: z.date({
-	// 	required_error: "Tanggal transaksi diperlukan"
-	// }),
+	tanggalTransaksi	: z.date({
+		required_error: "Tanggal transaksi diperlukan"
+	}),
 })
 
 export function KwitansiForm() {
 	type KwitansiFormField = {
 		name: "diterimaDari" | "nomorKwitansi" | "uangSejumlah" | "realCost" | "untukPembayaran" | "yangMenerima" | "nomorSpk" | "kota"
+		type: string
 		label: string
 		placeHolder: string
 		description: string 
@@ -46,8 +47,6 @@ export function KwitansiForm() {
 		defaultValues: {
 			diterimaDari		: "",
 			nomorKwitansi		: "",
-			uangSejumlah		: 0,
-			realCost			: 0,
 			untukPembayaran		: "",
 			yangMenerima		: "",
 			nomorSpk			: "",
@@ -71,48 +70,56 @@ export function KwitansiForm() {
 	const kwitansiFormFields: KwitansiFormField[] = [
 		{
 			name: "diterimaDari",
+			type: "string",
 			label: "Diterima Dari",
 			placeHolder: "PT. SUMBER JAYA MAKMUR",
 			description: "Orang / entitas yang memberikan uang"
 		},
 		{
 			name: "nomorKwitansi",
+			type: "string",
 			label: "Nomor Kwitansi",
 			placeHolder: "866/KWT-DM/SKM-KML/VI/2024",
 			description: "Nomor kwitansi sesuai dengan format"
 		},
 		{
 			name: "uangSejumlah",
+			type: "number",
 			label: "Uang Sejumlah",
 			placeHolder: "100000",
 			description: "Jumlah uang yang diterima"
 		},
 		{
 			name: "realCost",
+			type: "number",
 			label: "Biaya Ril",
 			placeHolder: "2000000",
 			description: "Biaya total yang harus dibayar"
 		},
 		{
 			name: "untukPembayaran",
+			type: "string",
 			label: "Untuk Pembayaran",
 			placeHolder: "Retensi 5%, Pekerjaan Sipil ...",
 			description: "Jumlah uang yang diterima"
 		},
 		{
 			name: "yangMenerima",
+			type: "string",
 			label: "Yang Menerima",
 			placeHolder: "BUDI",
 			description: "Orang yang bertanggung jawab menerima uang"
 		},
 		{
 			name: "nomorSpk",
+			type: "string",
 			label: "Nomor SPK",
 			placeHolder: "KML/PO/XX/XX/XXXXX",
 			description: "Nomor SPK yang menjadi acuan pengerjaan"
 		},
 		{
 			name: "kota",
+			type: "string",
 			label: "Kota",
 			placeHolder: "Jakarta",
 			description: "Kota tempat transaksi berlangsung"
@@ -133,7 +140,7 @@ export function KwitansiForm() {
 							<FormItem>
 								<FormLabel>{kwitansiField.label}</FormLabel>
 								<FormControl>
-									<Input placeholder={kwitansiField.placeHolder} {...field} />
+									<Input type={kwitansiField.type} placeholder={kwitansiField.placeHolder} {...field} />
 								</FormControl>
 								<FormDescription>
 									{kwitansiField.description}
