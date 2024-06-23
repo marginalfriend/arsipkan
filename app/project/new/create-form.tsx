@@ -34,23 +34,14 @@ const FormSchema = z.object({
   clientName: z.string(),
   projectName: z.string(),
   value: z.number(),
-	city: z.object({}),
-	date: z.object({}),
+  date: z.date(),
+  city: z.object({
+    id: z.number(),
+    city: z.string(),
+  }),
 });
 
 export function CreateForm() {
-	type CityFormField = {
-    name:
-      | "spkNumber"
-			| "projectName"
-			| "clientName"
-			| "value",
-    type: string;
-    label: string;
-    placeHolder: string;
-    description: string;
-  };
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -59,7 +50,7 @@ export function CreateForm() {
     createNewReceipt(data);
   }
 
-  const projectFormFields: CityFormField[] = [
+  const projectFormFields = [
     {
       name: "spkNumber",
       type: "",
@@ -97,7 +88,7 @@ export function CreateForm() {
         className="w-2/3 space-y-6 border p-4 rounded-lg"
       >
         <h2 className="text-center text-4xl font-semibold">Project Baru</h2>
-        {projectFormFields.map((formField: CityFormField) => {
+        {projectFormFields.map((formField) => {
           return (
             <FormField
               key={formField.name}
