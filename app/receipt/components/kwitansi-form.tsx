@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { createNewReceipt } from "../actions"
-import { DatePickerFormField } from "./date-picker-form-field"
+import { DatePickerFormField } from "@/components/date-picker-form-field"
 
 const FormSchema = z.object({
 	diterimaDari		: z.string(),
