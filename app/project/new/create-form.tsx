@@ -27,7 +27,7 @@ import { CityPicker } from "@/components/city-picker";
 		- Value			- Integer
 		- Date			- Date
 		- City 			- Drop Down
-	*/
+*/
 
 const FormSchema = z.object({
   spkNumber: z.string(),
@@ -111,8 +111,8 @@ export function CreateForm() {
             />
           );
         })}
-        <DatePicker form={form} />
         <CityPicker form={form} />
+        <DatePicker form={form} />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

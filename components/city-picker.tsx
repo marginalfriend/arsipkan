@@ -52,14 +52,15 @@ export function CityPicker(form: any) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Kota</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Pilih Kota Pengerjaan Projek" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
+									{/* To-do : Iterate through the cities available in goapi */}
                   <SelectItem value="m@example.com">m@example.com</SelectItem>
                   <SelectItem value="m@google.com">m@google.com</SelectItem>
                   <SelectItem value="m@support.com">m@support.com</SelectItem>
