@@ -3,7 +3,7 @@ import AuthButton from "./auth-button";
 
 export function Header() {
 	return(
-	<header className="flex flex-row w-screen items-center justify-between px-10 py-6">
+	<header className="flex flex-row w-screen items-center justify-between px-10 py-2 border-b mb-6">
 		<div className="flex">
 			<ul className="list-none flex gap-2">
 				<li>

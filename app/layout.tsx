@@ -3,38 +3,38 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Provider } from "./provider";
-import { Header } from "@/components/header";
+import { Header } from "@/app/components/header";
 
 const plus_jakarta_sans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+	subsets: ["latin"],
+	variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Arsipkan",
-  description: "Pengarsipan. Ter-automasi.",
+	title: "Arsipkan",
+	description: "Pengarsipan. Ter-automasi.",
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-        <body
-        	className={cn(
-				"min-h-screen bg-background font-sans antialiased",
-            	plus_jakarta_sans.variable
-        	)}
-		>
-			<Provider>
+	children,
+	}: Readonly<{
+	children: React.ReactNode;
+	}>) {
+	return (
+		<html lang="en">
+			<body
+				className={cn(
+					"min-h-screen bg-background font-sans antialiased",
+					plus_jakarta_sans.variable
+				)}
+			>
+				<Provider>
 				<>
 					<Header />
 					{children}
 				</>
-			</Provider>
-        </body>
-    </html>
-  );
+				</Provider>
+			</body>
+		</html>
+	);
 }
