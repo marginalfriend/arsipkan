@@ -67,6 +67,15 @@ export function KwitansiForm() {
 		createNewReceipt(data)
 	}
 
+	/* 
+		New Input Lists:
+		- Project 	- Drop Down (based on SPK)
+		- Issuer 	- Drop Down
+		- Date 		- Date Picker (default is now)
+		- Amount 	- Number
+		- Vat 		- Number (default 11% of amount)
+	*/
+
 	const kwitansiFormFields: KwitansiFormField[] = [
 		{
 			name: "diterimaDari",
@@ -128,7 +137,7 @@ export function KwitansiForm() {
 	return (
 		<Form {...form}>
 		<form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6 border p-4 rounded-lg">
-			<h2 className="text-center text-xl font-semibold">Kwitansi Baru</h2>
+			<h2 className="text-center text-4xl font-semibold">Kwitansi Baru</h2>
 			{
 				kwitansiFormFields.map((kwitansiField: KwitansiFormField) => {
 					return (
