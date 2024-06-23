@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
 
 const FormSchema = z.object({
   email: z
@@ -33,6 +34,29 @@ const FormSchema = z.object({
 });
 
 export function CityPicker(form: any) {
+	type City = {
+		id: number,
+		name: string,
+	}
+
+  const [cities, setCities]: [City[], Function] = useState([]);
+
+	// Fetching cities data from GoAPI
+  useEffect(() => {
+    "use server";
+
+		const citiesURL = "https://api.goapi.io/regional/kota"
+
+		fetch(citiesURL, {
+			headers: new Headers({
+				"X-API-KEY": "2c40acf8-fa47-56c5-f83e-b34d7ccc"
+			})
+		})
+		.then(res => res.json())
+		.then(data => setCities(data.data))
+
+  }, []);
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
       title: "You submitted the following values:",
@@ -49,7 +73,7 @@ export function CityPicker(form: any) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
-          name="email"
+          name="city"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Kota</FormLabel>
@@ -60,8 +84,13 @@ export function CityPicker(form: any) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-									{/* To-do : Iterate through the cities available in goapi */}
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
+                  {
+										cities?.map((city) => {
+											return(
+												<SelectItem key={city.id} value={city.name}>{city.name}</SelectItem>
+											)
+										})
+									}
                   <SelectItem value="m@google.com">m@google.com</SelectItem>
                   <SelectItem value="m@support.com">m@support.com</SelectItem>
                 </SelectContent>
