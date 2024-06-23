@@ -1,14 +1,16 @@
+'use client'
+
 import Link from "next/link";
 import AuthButton from "./auth-button";
 
 const routes = [
 	{
-		href: '/',
-		label: 'Home'
+		href: '/project',
+		label: 'Projek'
 	},
 	{
 		href: '/receipt',
-		label: 'Receipt'
+		label: 'Kwitansi'
 	}
 ]
 
@@ -21,7 +23,7 @@ export function Header() {
 					routes.map((route) => {
 						return (
 							<li key={route.href}>
-								<Link href={'/'}>
+								<Link href={route.href}>
 									<div className="p-2 hover:bg-slate-300 hover:cursor-pointer rounded-md font-semibold">
 										{route.label}
 									</div>
