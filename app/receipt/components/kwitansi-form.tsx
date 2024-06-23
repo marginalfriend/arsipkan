@@ -20,15 +20,15 @@ import { createNewReceipt } from "../actions";
 import { DatePicker } from "@/components/date-picker";
 
 const FormSchema = z.object({
-  diterimaDari: z.string(),
-  nomorKwitansi: z.string(),
-  uangSejumlah: z.string(),
-  realCost: z.string(),
-  untukPembayaran: z.string(),
-  yangMenerima: z.string(),
-  nomorSpk: z.string(),
-  kota: z.string(),
-  tanggalTransaksi: z.date({
+  diterimaDari			: z.string(),
+  nomorKwitansi			: z.string(),
+  uangSejumlah			: z.string(),
+  realCost					: z.string(),
+  untukPembayaran		: z.string(),
+  yangMenerima			: z.string(),
+  nomorSpk					: z.string(),
+  kota							: z.string(),
+  tanggalTransaksi	: z.date({
     required_error: "Tanggal transaksi diperlukan",
   }),
 });
