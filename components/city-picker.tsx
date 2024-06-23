@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -17,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 
 export function CityPicker(form: any) {
@@ -40,31 +38,19 @@ export function CityPicker(form: any) {
 
     fetch(provincesURL, {
       headers: new Headers({
-        "X-API-KEY": process.env.GOAPI_KEY ? process.env.GOAPI_KEY : "",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => setProvinces(data.data));
-  });
-
-  const citiesURL = "https://api.goapi.io/regional/kota";
-  function fetchCities(province: string) {
-    fetch(citiesURL + `?provinsi_id=${province}`, {
-      headers: new Headers({
-        "X-API-KEY": process.env.GOAPI_KEY ? process.env.GOAPI_KEY : "",
+        "X-API-KEY": "2c40acf8-fa47-56c5-f83e-b34d7ccc",
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("This is from city fetch");
-        console.log(data);
-        setCities(data.data);
+        setProvinces(data.data);
       });
-  }
+  });
 
-  // Fetching cities data from GoAPI
-  useEffect(() => {
-    "use server";
+  // Fetching cities from GoAPI
+  function fetchCities(province: string) {
+    const citiesURL =
+      "https://api.goapi.io/regional/kota?provinsi_id=" + province;
 
     fetch(citiesURL, {
       headers: new Headers({
@@ -72,8 +58,10 @@ export function CityPicker(form: any) {
       }),
     })
       .then((res) => res.json())
-      .then((data) => setCities(data.data));
-  }, []);
+      .then((data) => {
+        setCities(data.data);
+      });
+  }
 
   return (
     <FormField
@@ -86,7 +74,7 @@ export function CityPicker(form: any) {
             <Select onValueChange={fetchCities} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Pilih provinsi pengerjaan projek" />
+                  <SelectValue placeholder="Provinsi" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -103,8 +91,7 @@ export function CityPicker(form: any) {
               </SelectContent>
             </Select>
             <FormDescription>
-              You can manage email addresses in your{" "}
-              <Link href="/examples/forms">email settings</Link>.
+              Pilih provinsi
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -114,7 +101,7 @@ export function CityPicker(form: any) {
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Pilih kota pengerjaan projek" />
+                  <SelectValue placeholder="Kota" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -128,8 +115,7 @@ export function CityPicker(form: any) {
               </SelectContent>
             </Select>
             <FormDescription>
-              You can manage email addresses in your{" "}
-              <Link href="/examples/forms">email settings</Link>.
+              Pilih kota
             </FormDescription>
             <FormMessage />
           </FormItem>

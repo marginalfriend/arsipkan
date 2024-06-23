@@ -19,27 +19,25 @@ import { createNewReceipt } from "./actions";
 import { DatePicker } from "@/components/date-picker";
 import { CityPicker } from "@/components/city-picker";
 
-/* 
-		New Input Lists:
-		- SPK Number	- Text
-		- Client Name	- Text
-		- Project Name	- Text
-		- Value			- Integer
-		- Date			- Date
-		- City 			- Drop Down
-*/
-
 const FormSchema = z.object({
   spkNumber: z.string(),
   clientName: z.string(),
   projectName: z.string(),
-  value: z.number(),
-  date: z.date(),
-  city: z.object({
-    id: z.number(),
-    city: z.string(),
-  }),
+  value: z.number()
 });
+
+type ProjectFormField = {
+		name: 	
+		| "spkNumber"
+		| "clientName"
+		| "projectName"
+		| "value",
+		type: string,
+		label: string,
+		placeHolder: string,
+		description: string,
+}
+
 
 export function CreateForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -50,34 +48,34 @@ export function CreateForm() {
     createNewReceipt(data);
   }
 
-  const projectFormFields = [
+  const projectFormFields: ProjectFormField[] = [
     {
       name: "spkNumber",
-      type: "",
-      label: "",
-      placeHolder: "",
-      description: "",
+      type: "text",
+      label: "Nomor SPK",
+      placeHolder: "XXXX/XX/XXX/XXX/XXX",
+      description: "Nomor SPK sesuai dengan client",
     },
     {
       name: "projectName",
-      type: "",
-      label: "",
-      placeHolder: "",
-      description: "",
+      type: "text",
+      label: "Nama Projek",
+      placeHolder: "Pemasangan Panel Surya",
+      description: "Tulis nama projek sesuai dengan SPK",
     },
     {
       name: "clientName",
-      type: "",
-      label: "",
-      placeHolder: "",
-      description: "",
+      type: "text",
+      label: "Nama Client",
+      placeHolder: "PT. JAYA ABADI",
+      description: "Nama perseroan client",
     },
     {
       name: "value",
-      type: "",
-      label: "",
-      placeHolder: "",
-      description: "",
+      type: "text",
+      label: "Nilai Projek",
+      placeHolder: "1000000000",
+      description: "Nilai keseluruhan projek sesuai dengan RAB",
     },
   ];
 
@@ -87,8 +85,11 @@ export function CreateForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-2/3 space-y-6 border p-4 rounded-lg"
       >
-        <h2 className="text-center text-4xl font-semibold">Project Baru</h2>
-        {projectFormFields.map((formField) => {
+        <h2 className="text-center text-4xl font-semibold">
+					Projek Baru
+				</h2>
+
+        {projectFormFields.map((formField: ProjectFormField) => {
           return (
             <FormField
               key={formField.name}
