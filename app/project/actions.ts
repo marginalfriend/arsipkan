@@ -17,7 +17,7 @@ export async function getProjects() {
 					spkNumber: data.number,
 					clientName: data.clientCompanyName,
 					projectName: data.projectName,
-					date: data.date,
+					date: data.date.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
 					city: data.cityId,
 					value: data.value,
 					remaining: data.value

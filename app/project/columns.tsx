@@ -6,7 +6,7 @@ export type Project = {
 	spkNumber: string
 	clientName: string
 	projectName: string
-	date: Date
+	date: string
 	city: string
 	value: number
 	remaining: number
