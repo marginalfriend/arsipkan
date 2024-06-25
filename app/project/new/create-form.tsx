@@ -87,9 +87,9 @@ export function CreateForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 space-y-6 border p-4 rounded-lg"
+        className="w-9/10 lg:w-2/3 space-y-6 border p-4 rounded-lg m-0"
       >
-        <h2 className="text-center text-4xl font-semibold">
+        <h2 className="text-center text-4xl font-bold">
 					Projek Baru
 				</h2>
 

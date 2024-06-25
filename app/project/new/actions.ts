@@ -5,11 +5,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function createProject(req: any) {
-
-	console.log(req)
-
-	// const formattedDate = `${req.date.getDate() >= 10 ? req.date.getDate() : "0" + req.date.getDate()}/${req.date.getMonth() + 1 >= 10 ? req.date.getMonth() + 1 : "0" + req.date.getMonth()}/${req.date.getFullYear()}`
-
 	try {
 		await prisma.sPK.create({
 			data: {
@@ -23,8 +18,6 @@ export async function createProject(req: any) {
 		})
 
 		console.log("Successfully created a project")
-		// return { message: "Successfully created a project." }
-
 	} catch (e) {
 
 		console.log(e)
