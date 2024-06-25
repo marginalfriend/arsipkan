@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createProject } from "./actions";
 import { DatePicker } from "@/components/date-picker";
+import { useToast } from "@/components/ui/use-toast";
 import { CityPicker } from "@/components/city-picker";
 import { useState } from "react";
 
@@ -25,32 +26,33 @@ const FormSchema = z.object({
   clientName: z.string(),
   projectName: z.string(),
   value: z.string(),
-	date: z.date(),
+  date: z.date(),
 });
 
 type ProjectFormField = {
-		name: 	
-		| "spkNumber"
-		| "clientName"
-		| "projectName"
-		| "value",
-		type: string,
-		label: string,
-		placeHolder: string,
-		description: string,
-}
-
+  name: "spkNumber" | "clientName" | "projectName" | "value";
+  type: string;
+  label: string;
+  placeHolder: string;
+  description: string;
+};
 
 export function CreateForm() {
-	const [message, setMessage] = useState("")
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-		createProject(data)
-  }
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    createProject(data).then((result) => {
+      toast({
+				variant: result.toastVariant,
+        title: result.message,
+        description: result.description,
+      });
+    });
+  };
 
   const projectFormFields: ProjectFormField[] = [
     {
@@ -89,11 +91,7 @@ export function CreateForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-9/10 lg:w-2/3 space-y-6 border p-4 rounded-lg m-0"
       >
-        <h2 className="text-center text-4xl font-bold">
-					Projek Baru
-				</h2>
-
-				<h3>{message}</h3>
+        <h2 className="text-center text-4xl font-bold">Projek Baru</h2>
 
         {projectFormFields.map((formField: ProjectFormField) => {
           return (

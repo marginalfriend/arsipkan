@@ -1,10 +1,14 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 export async function createProject(req: any) {
+	var message;
+	var description;
+	var toastVariant: "default" | "destructive" | null | undefined;
+
 	try {
 		await prisma.sPK.create({
 			data: {
@@ -17,15 +21,21 @@ export async function createProject(req: any) {
 			}
 		})
 
-		console.log("Successfully created a project")
+		message = "Berhasil membuat projek baru"
+		description = "Projek baru dari " + req.clientName + " untuk " + req.projectName
+		toastVariant = "default"
+
 	} catch (e) {
 
 		console.log(e)
-		// return { message: e }
 
-	} finally {
-
-		await prisma.$disconnect()
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			message = "Gagal membuat projek baru"
+			description = "Ada kesalahan dalam pembuatan projek baru"
+			toastVariant = "destructive"
+		}
 
 	}
+
+	return { message, description, toastVariant }
 }

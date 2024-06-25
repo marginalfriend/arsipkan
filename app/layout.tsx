@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Provider } from "./provider";
 import { Header } from "@/app/components/header";
+import { Toaster } from "@/components/ui/toaster";
 
 const plus_jakarta_sans = Plus_Jakarta_Sans({
 	subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
 				<>
 					<Header />
 					{children}
+					<Toaster />
 				</>
 				</Provider>
 			</body>

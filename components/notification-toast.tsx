@@ -10,10 +10,7 @@ export function ToastWithTitle(title:string, description:string) {
     <Button
       variant="outline"
       onClick={() => {
-        toast({
-          title: title,
-          description: description,
-        })
+
       }}
     >
       Show Toast
