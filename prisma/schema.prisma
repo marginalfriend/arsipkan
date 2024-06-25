@@ -20,7 +20,12 @@ model City {
 }
 
 model SPK {
-  id     String @id @default(uuid())
-  cityId String
-  city   City   @relation(fields: [cityId], references: [id])
+  id                String   @id @default(uuid())
+  cityId            String
+  city              City     @relation(fields: [cityId], references: [id])
+  number            String   @unique
+  clientCompanyName String
+  projectName       String
+  value             Int
+  date              DateTime
 }
