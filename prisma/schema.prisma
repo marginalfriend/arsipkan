@@ -16,4 +16,11 @@ datasource db {
 model City {
   id   String @id
   name String
+  SPK  SPK[]
+}
+
+model SPK {
+  id     String @id @default(uuid())
+  cityId String
+  city   City   @relation(fields: [cityId], references: [id])
 }
