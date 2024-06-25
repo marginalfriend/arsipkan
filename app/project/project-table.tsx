@@ -11,6 +11,6 @@ export default function ProjectTable() {
   useEffect(() => {
 		getProjects().then(d => setData(d))
 	}, []);
-	
+
   return <DataTable columns={columns} data={data} />;
 }
