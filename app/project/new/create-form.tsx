@@ -15,15 +15,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createNewReceipt } from "./actions";
+import { createProject } from "./actions";
 import { DatePicker } from "@/components/date-picker";
 import { CityPicker } from "@/components/city-picker";
+import { useState } from "react";
 
 const FormSchema = z.object({
   spkNumber: z.string(),
   clientName: z.string(),
   projectName: z.string(),
-  value: z.number()
+  value: z.string(),
+	date: z.date(),
 });
 
 type ProjectFormField = {
@@ -40,12 +42,14 @@ type ProjectFormField = {
 
 
 export function CreateForm() {
+	const [message, setMessage] = useState("")
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    createNewReceipt(data);
+		createProject(data)
   }
 
   const projectFormFields: ProjectFormField[] = [
@@ -89,6 +93,8 @@ export function CreateForm() {
 					Projek Baru
 				</h2>
 
+				<h3>{message}</h3>
+
         {projectFormFields.map((formField: ProjectFormField) => {
           return (
             <FormField
@@ -112,7 +118,7 @@ export function CreateForm() {
             />
           );
         })}
-        <CityPicker form={form} />
+        {/* <CityPicker form={form} /> */}
         <DatePicker form={form} />
         <Button type="submit">Submit</Button>
       </form>
