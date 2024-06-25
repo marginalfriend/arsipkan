@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 
-export function ToastWithTitle() {
+export function ToastWithTitle(title:string, description:string) {
   const { toast } = useToast()
 
   return (
@@ -11,8 +11,8 @@ export function ToastWithTitle() {
       variant="outline"
       onClick={() => {
         toast({
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
+          title: title,
+          description: description,
         })
       }}
     >
