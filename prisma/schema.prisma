@@ -28,6 +28,7 @@ model SPK {
   date              DateTime
   cityId            String
   city              City     @relation(fields: [cityId], references: [id])
+  Bill              Bill[]
 }
 
 model Bill {
@@ -39,4 +40,6 @@ model Bill {
   amount          Int
   vat             Int
   receiver        String
+  spk             SPK      @relation(fields: [spkId], references: [id])
+  spkId           String
 }
