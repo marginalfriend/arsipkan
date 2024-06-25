@@ -32,14 +32,22 @@ model SPK {
 }
 
 model Bill {
-  id              String   @id @default(uuid())
-  billSequence    Int      @default(autoincrement())
-  receiptSequence Int      @default(autoincrement())
+  id              String          @id @default(uuid())
+  billSequence    Int             @default(autoincrement())
+  receiptSequence Int             @default(autoincrement())
   issuer          String
-  date            DateTime @default(now())
+  date            DateTime        @default(now())
   amount          Int
   vat             Int
   receiver        String
-  spk             SPK      @relation(fields: [spkId], references: [id])
+  spk             SPK             @relation(fields: [spkId], references: [id])
   spkId           String
+  SignedInvoice   SignedInvoice[]
+}
+
+model SignedInvoice {
+  id     String @id @default(uuid())
+  docId  String
+  bill   Bill   @relation(fields: [billId], references: [id])
+  billId String
 }
