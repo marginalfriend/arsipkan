@@ -43,11 +43,18 @@ model Bill {
   spk             SPK             @relation(fields: [spkId], references: [id])
   spkId           String
   SignedInvoice   SignedInvoice[]
+  SignedReceipt   SignedReceipt[]
 }
 
 model SignedInvoice {
   id     String @id @default(uuid())
   docId  String
+  bill   Bill   @relation(fields: [billId], references: [id])
+  billId String
+}
+
+model SignedReceipt {
+  id     String @id @default(uuid())
   bill   Bill   @relation(fields: [billId], references: [id])
   billId String
 }
