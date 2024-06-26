@@ -75,15 +75,6 @@ export function KwitansiForm() {
     createNewReceipt(data);
   }
 
-  /* 
-		New Input Lists:
-		- Project 	- Drop Down (based on SPK)
-		- Issuer 	- Drop Down
-		- Date 		- Date Picker (default is now)
-		- Amount 	- Number
-		- Vat 		- Number (default 11% of amount)
-	*/
-
   const kwitansiFormFields: KwitansiFormField[] = [
     {
       name: "diterimaDari",
