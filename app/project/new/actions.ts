@@ -10,6 +10,19 @@ export async function createProject(req: any) {
 	var toastVariant: "default" | "destructive" | null | undefined;
 
 	try {
+		// Find or create city
+		const city = await prisma.city.upsert({
+			where: {
+				id: req.city.id,
+				name: req.city.name,
+			},
+			update: {},
+			create: {
+				id: req.city.id,
+				name: req.city.name,
+			}
+		})
+
 		await prisma.sPK.create({
 			data: {
 				number: req.spkNumber,
@@ -17,7 +30,7 @@ export async function createProject(req: any) {
 				projectName: req.projectName,
 				value: parseInt(req.value),
 				date: req.date.toISOString(),
-				cityId: "11.01"
+				cityId: "1"
 			}
 		})
 
