@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { createNewReceipt } from "./actions";
 import { DatePicker } from "@/components/date-picker";
+import { SPKPicker } from "./spk-picker";
 
 const FormSchema = z.object({
   diterimaDari: z.string(),
@@ -26,9 +27,9 @@ const FormSchema = z.object({
   realCost: z.string(),
   untukPembayaran: z.string(),
   yangMenerima: z.string(),
-  nomorSpk: z.string(),
+  spk: z.string(),
   kota: z.string(),
-  tanggalTransaksi: z.date(),
+  date: z.date(),
 });
 
 type NameField =
@@ -38,7 +39,7 @@ type NameField =
   | "realCost"
   | "untukPembayaran"
   | "yangMenerima"
-  | "nomorSpk"
+  | "spk"
   | "kota";
 
 type KwitansiFormField = {
@@ -59,14 +60,14 @@ export function KwitansiForm() {
       realCost: "",
       untukPembayaran: "",
       yangMenerima: "",
-      nomorSpk: "",
+      spk: "",
       kota: "",
-      tanggalTransaksi: new Date(),
+      date: new Date(),
     },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log("Submit invoked")
+    console.log("Submit invoked");
     createNewReceipt(data);
   };
 
@@ -113,13 +114,13 @@ export function KwitansiForm() {
       placeHolder: "BUDI",
       description: "Orang yang bertanggung jawab menerima uang",
     },
-    {
-      name: "nomorSpk",
-      type: "text",
-      label: "Nomor SPK",
-      placeHolder: "KML/PO/XX/XX/XXXXX",
-      description: "Nomor SPK yang menjadi acuan pengerjaan",
-    },
+    // {
+    //   name: "nomorSpk",
+    //   type: "text",
+    //   label: "Nomor SPK",
+    //   placeHolder: "KML/PO/XX/XX/XXXXX",
+    //   description: "Nomor SPK yang menjadi acuan pengerjaan",
+    // },
     {
       name: "kota",
       type: "text",
@@ -135,7 +136,6 @@ export function KwitansiForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 border p-4 rounded-lg"
       >
-
         {kwitansiFormFields.map((kwitansiField: KwitansiFormField) => {
           return (
             <FormField
@@ -160,6 +160,7 @@ export function KwitansiForm() {
           );
         })}
         <DatePicker form={form} />
+        <SPKPicker form={form} />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

@@ -2,101 +2,129 @@
 
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
 import { dateFormatter } from "@/lib/utils"
+import { Bill, PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 export async function createNewReceipt(data: any) {
 	const authHeader = await getAuthHeaderBearer()
 	const sheetName = 'Kwitansi_Template'
-	
+
 	const range = {
-		diterimaDari : '!E11',
-		nomorKwitansi : '!B8',
-		uangSejumlah : '!E14',
-		realCost : '!H25',
-		untukPembayaran : '!E17',
-		yangMenerima : '!H37',
-		nomorSpk : '!E19',
-		kotaTanggal : '!G30',
+		diterimaDari: '!E11',
+		nomorKwitansi: '!B8',
+		uangSejumlah: '!E14',
+		realCost: '!H25',
+		untukPembayaran: '!E17',
+		yangMenerima: '!H37',
+		nomorSpk: '!E19',
+		kotaTanggal: '!G30',
 	}
-	
+
 	const queryParams = new URLSearchParams({
 		valueInputOption: 'USER_ENTERED',
 	})
 	const majorDimension = 'ROWS'
 	const spreadSheetId = '1_scML3y1wPePz1Mxu_b5fHo-7EkSD9C0Ep65TETLt84'
-	
+
 	const reqBody = {
 		data: [
 			{
-				range : sheetName + range.diterimaDari,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.diterimaDari,
+				majorDimension: majorDimension,
+				values: [
 					[data.diterimaDari]
 				]
 			},
 			{
-				range : sheetName + range.uangSejumlah,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.uangSejumlah,
+				majorDimension: majorDimension,
+				values: [
 					[data.uangSejumlah]
 				]
 			},
 			{
-				range : sheetName + range.nomorKwitansi,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.nomorKwitansi,
+				majorDimension: majorDimension,
+				values: [
 					[data.nomorKwitansi]
 				]
 			},
 			{
-				range : sheetName + range.realCost,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.realCost,
+				majorDimension: majorDimension,
+				values: [
 					[data.realCost]
 				]
 			},
 			{
-				range : sheetName + range.untukPembayaran,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.untukPembayaran,
+				majorDimension: majorDimension,
+				values: [
 					[data.untukPembayaran]
 				]
 			},
 			{
-				range : sheetName + range.yangMenerima,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.yangMenerima,
+				majorDimension: majorDimension,
+				values: [
 					[data.yangMenerima]
 				]
 			},
 			{
-				range : sheetName + range.nomorSpk,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.nomorSpk,
+				majorDimension: majorDimension,
+				values: [
 					['Nomor : ' + data.nomorSpk]
 				]
 			},
 			{
-				range : sheetName + range.kotaTanggal,
-				majorDimension : majorDimension,
-				values : [
+				range: sheetName + range.kotaTanggal,
+				majorDimension: majorDimension,
+				values: [
 					[data.kota + ', ' + dateFormatter(data.tanggalTransaksi)]
 				]
 			}
 		]
 	}
 
-	
+
 	const updateUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadSheetId}/values:batchUpdate?${queryParams.toString()}`
-	
+
 	const res = await fetch(updateUrl, {
 		headers: authHeader,
 		method: 'POST',
 		body: JSON.stringify(reqBody)
 	})
 
-	console.log(authHeader)
-
 	const result = await res.json()
 
 	console.log(result)
 }
+
+async function insertNewReceipt(data: Bill) {
+	var spk;
+
+	prisma.sPK.findUnique({
+		where: { id: data.spkId }
+	}).then(spk => spk = spk)
+
+	if (!spk) {
+		return
+	}
+
+	prisma.bill.create({
+		data: {
+			billSequence: data.billSequence,
+			receiptSequence: data.receiptSequence,
+			issuer: data.issuer,
+			date: data.date,
+			amount: data.amount,
+			vat: data.vat,
+			receiver: data.receiver,
+			spk: spk,
+		}
+	})
+}
+
+export const spks = async () => await prisma.sPK.findMany()
