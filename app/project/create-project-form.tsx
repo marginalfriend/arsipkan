@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { createProject } from "./actions";
 import { DatePicker } from "@/components/date-picker";
 import { useToast } from "@/components/ui/use-toast";
+import { CityPicker } from "./city-picker";
 
 const FormSchema = z.object({
   spkNumber: z.string(),
@@ -35,7 +36,7 @@ type ProjectFormField = {
   description: string;
 };
 
-export function CreateForm() {
+export function CreateProjectForm() {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -52,7 +53,7 @@ export function CreateForm() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     createProject(data).then((result) => {
       toast({
-				variant: result.toastVariant,
+        variant: result.toastVariant,
         title: result.message,
         description: result.description,
       });
@@ -94,10 +95,8 @@ export function CreateForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-9/10 lg:w-2/3 space-y-6 border p-4 rounded-lg m-0"
+        className="w-full space-y-6 border p-4 rounded-lg m-0"
       >
-        <h2 className="text-center text-4xl font-bold">Projek Baru</h2>
-
         {projectFormFields.map((formField: ProjectFormField) => {
           return (
             <FormField
@@ -121,7 +120,7 @@ export function CreateForm() {
             />
           );
         })}
-        {/* <CityPicker form={form} /> */}
+        <CityPicker form={form} />
         <DatePicker form={form} />
         <Button type="submit">Submit</Button>
       </form>

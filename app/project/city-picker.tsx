@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { getCities, getProvinces } from "./actions";
 
 export function CityPicker(form: any) {
   type City = {
@@ -32,35 +33,12 @@ export function CityPicker(form: any) {
   const [cities, setCities]: [City[], Function] = useState([]);
   const [provinces, setProvinces]: [Province[], Function] = useState([]);
 
-  // Fetching provinces data from GoAPI
-  useEffect(() => {
-    const provincesURL = "https://api.goapi.io/regional/provinsi";
+  const fetchProvinces = () => {
+    getProvinces().then((data) => setProvinces(data));
+  };
 
-    fetch(provincesURL, {
-      headers: new Headers({
-        "X-API-KEY": "2c40acf8-fa47-56c5-f83e-b34d7ccc",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setProvinces(data.data);
-      });
-  });
-
-  // Fetching cities from GoAPI
-  function fetchCities(province: string) {
-    const citiesURL =
-      "https://api.goapi.io/regional/kota?provinsi_id=" + province;
-
-    fetch(citiesURL, {
-      headers: new Headers({
-        "X-API-KEY": "2c40acf8-fa47-56c5-f83e-b34d7ccc",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCities(data.data);
-      });
+  function fetchCities(provinceId: string) {
+    getCities(parseInt(provinceId)).then((data) => setCities(data));
   }
 
   return (
@@ -73,26 +51,26 @@ export function CityPicker(form: any) {
             <FormLabel>Provinsi</FormLabel>
             <Select onValueChange={fetchCities} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger onClick={fetchProvinces}>
                   <SelectValue placeholder="Provinsi" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {provinces?.map((province) => {
-                  return (
-                    <SelectItem
-                      key={province.id}
-                      value={province.id.toString()}
-                    >
-                      {province.name}
-                    </SelectItem>
-                  );
-                })}
+                <div className="overflow-y-auto">
+                  {provinces?.map((province) => {
+                    return (
+                      <SelectItem
+                        key={province.id}
+                        value={province.id.toString()}
+                      >
+                        {province.name}
+                      </SelectItem>
+                    );
+                  })}
+                </div>
               </SelectContent>
             </Select>
-            <FormDescription>
-              Pilih provinsi
-            </FormDescription>
+            <FormDescription>Pilih provinsi</FormDescription>
             <FormMessage />
           </FormItem>
 
@@ -114,9 +92,7 @@ export function CityPicker(form: any) {
                 })}
               </SelectContent>
             </Select>
-            <FormDescription>
-              Pilih kota
-            </FormDescription>
+            <FormDescription>Pilih kota</FormDescription>
             <FormMessage />
           </FormItem>
         </>

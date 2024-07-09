@@ -1,0 +1,1 @@
+export const GOAPI_URL = "https://api.goapi.io"
