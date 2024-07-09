@@ -1,9 +1,9 @@
 'use server'
 
-// import { getAuthHeaderBearer } from "@/lib/auth-utils"
+import { getAuthHeaderBearer } from "@/lib/auth-utils"
 
 export async function createNewReceipt(data: any) {
-	// const authHeader = await getAuthHeaderBearer()
+	const authHeader = await getAuthHeaderBearer()
 	const sheetName = 'Kwitansi_Template'
 	
 	const range = {
@@ -90,7 +90,7 @@ export async function createNewReceipt(data: any) {
 	console.log("Stage 1 : Initialization complete")
 	
 	const res = await fetch(updateUrl, {
-		// headers: authHeader,
+		headers: authHeader,
 		method: 'POST',
 		body: JSON.stringify(reqBody)
 	})

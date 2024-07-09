@@ -52,6 +52,17 @@ type KwitansiFormField = {
 export function KwitansiForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      diterimaDari: "",
+      nomorKwitansi: "",
+      uangSejumlah: "",
+      realCost: "",
+      untukPembayaran: "",
+      yangMenerima: "",
+      nomorSpk: "",
+      kota: "",
+      tanggalTransaksi: new Date(),
+    },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
@@ -122,10 +133,9 @@ export function KwitansiForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 space-y-6 border p-4 rounded-lg"
+        className="w-full space-y-6 border p-4 rounded-lg"
       >
-        <h2 className="text-center text-4xl font-semibold">Kwitansi Baru</h2>
-				
+
         {kwitansiFormFields.map((kwitansiField: KwitansiFormField) => {
           return (
             <FormField

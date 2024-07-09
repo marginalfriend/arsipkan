@@ -24,6 +24,7 @@ export function DatePicker(form: any) {
   return (
     <FormField
       control={form.control}
+			defaultValue={new Date()}
       name="date"
       render={({ field }) => (
         <FormItem>

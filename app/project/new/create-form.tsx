@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { date, z } from "zod";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +40,13 @@ export function CreateForm() {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      spkNumber: "",
+      clientName: "",
+      projectName: "",
+      value: "",
+      date: new Date(),
+    },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
