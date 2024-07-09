@@ -1,6 +1,7 @@
 'use server'
 
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
+import { dateFormatter } from "@/lib/utils"
 
 export async function createNewReceipt(data: any) {
 	const authHeader = await getAuthHeaderBearer()
@@ -18,7 +19,6 @@ export async function createNewReceipt(data: any) {
 	}
 	
 	const queryParams = new URLSearchParams({
-		key: process.env.GOOGLE_API_KEY ? process.env.GOOGLE_API_KEY : '',
 		valueInputOption: 'USER_ENTERED',
 	})
 	const majorDimension = 'ROWS'
@@ -79,7 +79,7 @@ export async function createNewReceipt(data: any) {
 				range : sheetName + range.kotaTanggal,
 				majorDimension : majorDimension,
 				values : [
-					[data.kota + data.tanggalTransaksi]
+					[data.kota + ', ' + dateFormatter(data.tanggalTransaksi)]
 				]
 			}
 		]
@@ -87,13 +87,14 @@ export async function createNewReceipt(data: any) {
 
 	
 	const updateUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadSheetId}/values:batchUpdate?${queryParams.toString()}`
-	console.log("Stage 1 : Initialization complete")
 	
 	const res = await fetch(updateUrl, {
 		headers: authHeader,
 		method: 'POST',
 		body: JSON.stringify(reqBody)
 	})
+
+	console.log(authHeader)
 
 	const result = await res.json()
 

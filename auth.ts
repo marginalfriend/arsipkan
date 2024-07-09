@@ -7,9 +7,9 @@ export const authOptions: AuthOptions = {
 		Google({
 			clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
-			authorization : {
-				url: "https://accounts.google.com/o/oauth2/auth",
-				params : {
+			authorization: {
+				url: "https://accounts.google.com/o/oauth2/v2/auth",
+				params: {
 					scope: process.env.SCOPES,
 				}
 			},
@@ -31,13 +31,13 @@ export const authOptions: AuthOptions = {
 
 			return token
 		},
-		
+
 
 		async session({ session, token, user }) {
 			// Send properties to the client, like an access_token and user id from a provider.
 			session.accessToken = token.accessToken
 			session.user.id = token.id
-			
+
 			return session
 		}
 	}
@@ -50,6 +50,6 @@ export function auth(
 		| [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
 		| [NextApiRequest, NextApiResponse]
 		| []
-  	) {
+) {
 	return getServerSession(...args, authOptions)
 }
