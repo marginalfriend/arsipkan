@@ -1,12 +1,11 @@
 'use server'
 
-import { getAuthHeaderBearer } from "@/lib/auth-utils"
+// import { getAuthHeaderBearer } from "@/lib/auth-utils"
 
 export async function createNewReceipt(data: any) {
-
-	const authHeader = await getAuthHeaderBearer()
+	// const authHeader = await getAuthHeaderBearer()
 	const sheetName = 'Kwitansi_Template'
-
+	
 	const range = {
 		diterimaDari : '!E11',
 		nomorKwitansi : '!B8',
@@ -17,13 +16,14 @@ export async function createNewReceipt(data: any) {
 		nomorSpk : '!E19',
 		kotaTanggal : '!G30',
 	}
-
+	
 	const queryParams = new URLSearchParams({
-		valueInputOption: 'USER_ENTERED'
+		key: process.env.GOOGLE_API_KEY ? process.env.GOOGLE_API_KEY : '',
+		valueInputOption: 'USER_ENTERED',
 	})
 	const majorDimension = 'ROWS'
 	const spreadSheetId = '1_scML3y1wPePz1Mxu_b5fHo-7EkSD9C0Ep65TETLt84'
-
+	
 	const reqBody = {
 		data: [
 			{
@@ -85,10 +85,12 @@ export async function createNewReceipt(data: any) {
 		]
 	}
 
+	
 	const updateUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadSheetId}/values:batchUpdate?${queryParams.toString()}`
-
+	console.log("Stage 1 : Initialization complete")
+	
 	const res = await fetch(updateUrl, {
-		headers: authHeader,
+		// headers: authHeader,
 		method: 'POST',
 		body: JSON.stringify(reqBody)
 	})

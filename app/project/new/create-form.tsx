@@ -18,8 +18,6 @@ import { Input } from "@/components/ui/input";
 import { createProject } from "./actions";
 import { DatePicker } from "@/components/date-picker";
 import { useToast } from "@/components/ui/use-toast";
-import { CityPicker } from "@/components/city-picker";
-import { useState } from "react";
 
 const FormSchema = z.object({
   spkNumber: z.string(),

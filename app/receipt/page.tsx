@@ -1,5 +1,4 @@
-import AuthButton from "../components/auth-button"
-import { KwitansiForm } from "./components/kwitansi-form"
+import { KwitansiForm } from "./kwitansi-form"
 
 export default function Page() {
 	return (
