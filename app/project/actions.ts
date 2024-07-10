@@ -1,7 +1,7 @@
 "use server"
 
 import { PrismaClient, Prisma } from "@prisma/client"
-import { Project } from "./columns"
+import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
 
 

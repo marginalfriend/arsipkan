@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { getCities, getProvinces } from "./actions";
+import { getCities, getProvinces } from "../actions";
 
 export function CityPicker(form: any) {
   type City = {

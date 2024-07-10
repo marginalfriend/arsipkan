@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createProject } from "./actions";
+import { createProject } from "../actions";
 import { DatePicker } from "@/components/date-picker";
 import { useToast } from "@/components/ui/use-toast";
 import { CityPicker } from "./city-picker";
