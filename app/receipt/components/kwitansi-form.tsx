@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { createNewReceipt } from "./actions";
+import { createNewReceipt } from "../actions";
 import { DatePicker } from "@/components/date-picker";
 import { SPKPicker } from "./spk-picker";
 

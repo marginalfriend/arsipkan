@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { PrismaClient, SPK } from "@prisma/client";
-import { spks } from "./actions";
+import { spks } from "../actions";
 
 const FormSchema = z.object({
   email: z
@@ -29,14 +29,14 @@ const FormSchema = z.object({
     .email(),
 });
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export function SPKPicker(form: any) {
-	const [spk, setSpk] = useState<SPK []>([])
+  const [spk, setSpk] = useState<SPK[]>([]);
 
-	useEffect(() => {
-		spks().then(spk => setSpk(spk))
-	}, [])
+  useEffect(() => {
+    spks().then((spk) => setSpk(spk));
+  }, []);
 
   return (
     <FormField
