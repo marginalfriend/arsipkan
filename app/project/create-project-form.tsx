@@ -25,6 +25,7 @@ const FormSchema = z.object({
   clientName: z.string(),
   projectName: z.string(),
   value: z.string(),
+  city: z.string(),
   date: z.date(),
 });
 

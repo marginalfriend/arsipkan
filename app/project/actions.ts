@@ -48,16 +48,16 @@ export async function createProject(req: any) {
 	var toastVariant: "default" | "destructive" | null | undefined;
 
 	try {
-		// Find or create city
+		const cityJson = JSON.parse(req.city)
 		const city = await prisma.city.upsert({
 			where: {
-				id: req.city.id,
-				name: req.city.name,
+				id: cityJson.id,
+				name: cityJson.name,
 			},
 			update: {},
 			create: {
-				id: req.city.id,
-				name: req.city.name,
+				id: cityJson.id,
+				name: cityJson.name,
 			}
 		})
 

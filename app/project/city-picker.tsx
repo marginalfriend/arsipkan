@@ -37,9 +37,9 @@ export function CityPicker(form: any) {
     getProvinces().then((data) => setProvinces(data));
   };
 
-  function fetchCities(provinceId: string) {
+  const fetchCities = (provinceId: string) => {
     getCities(parseInt(provinceId)).then((data) => setCities(data));
-  }
+  };
 
   return (
     <FormField
@@ -49,7 +49,7 @@ export function CityPicker(form: any) {
         <>
           <FormItem>
             <FormLabel>Provinsi</FormLabel>
-            <Select onValueChange={fetchCities} defaultValue={field.value}>
+            <Select onValueChange={fetchCities} defaultValue="">
               <FormControl>
                 <SelectTrigger onClick={fetchProvinces}>
                   <SelectValue placeholder="Provinsi" />
@@ -76,7 +76,7 @@ export function CityPicker(form: any) {
 
           <FormItem>
             <FormLabel>Kota</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} defaultValue="">
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Kota" />
@@ -85,7 +85,10 @@ export function CityPicker(form: any) {
               <SelectContent>
                 {cities?.map((city) => {
                   return (
-                    <SelectItem key={city.id} value={city.name}>
+                    <SelectItem
+                      key={city.id}
+                      value={JSON.stringify({ id: city.id, name: city.name })}
+                    >
                       {city.name}
                     </SelectItem>
                   );
