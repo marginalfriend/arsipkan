@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createProject } from "../actions";
+import { createFolder, createProject } from "../actions";
 import { DatePicker } from "@/components/date-picker";
 import { useToast } from "@/components/ui/use-toast";
 import { CityPicker } from "./city-picker";
@@ -52,13 +52,21 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    createProject(data).then((result) => {
+    createFolder(data.projectName).then((result) => {
+      console.log(result);
       toast({
-        variant: result.toastVariant,
-        title: result.message,
-        description: result.description,
+        // variant: result.toastVariant,
+        title: "Fetch Result",
+        description: result,
       });
     });
+    // createProject(data).then((result) => {
+    //   toast({
+    //     variant: result.toastVariant,
+    //     title: result.message,
+    //     description: result.description,
+    //   });
+    // });
   };
 
   const projectFormFields: ProjectFormField[] = [

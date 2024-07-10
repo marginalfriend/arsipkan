@@ -26,6 +26,7 @@ model SPK {
   projectName       String
   value             Int
   date              DateTime
+  folderId          String
   cityId            String
   city              City     @relation(fields: [cityId], references: [id])
   Bill              Bill[]

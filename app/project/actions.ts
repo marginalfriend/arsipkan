@@ -5,7 +5,9 @@ import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
 import { ResponseMessage } from "@/types/custom-types";
 import { dateFormatter } from "@/lib/utils";
-
+import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/req"
+import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
+import { getAuthHeaderBearer } from "@/lib/auth-utils";
 
 
 const prisma = new PrismaClient()
@@ -65,16 +67,20 @@ export async function createProject(req: any) {
 			}
 		})
 
+		const folderId = await createFolder(req.projectName)
+
 		await prisma.sPK.create({
 			data: {
 				number: req.spkNumber,
 				clientCompanyName: req.clientName,
+				folderId: folderId,
 				projectName: req.projectName,
 				value: parseInt(req.value),
 				date: req.date.toISOString(),
 				cityId: city.id
 			}
 		})
+
 
 		response.message = "Berhasil membuat projek baru"
 		response.description = "Projek baru dari " + req.clientName + " untuk " + req.projectName
@@ -118,4 +124,37 @@ export async function getCities(provinceId: number) {
 	const data = await res.json()
 
 	return data.data
+}
+
+// Create new folder and return folder id
+export async function createFolder(projectName: string) {
+	const fileMetadata = {
+		name: projectName,
+		mimeType: MIME_TYPE_FOLDER,
+		// parents: [ROOT_DRIVE_FOLDER_ID]
+	}
+
+	const authHeader = await getAuthHeaderBearer()
+
+	try {
+
+		const res = await fetch(GOOGLE_DRIVE_API_URL, {
+			method: 'POST',
+			headers: authHeader,
+			body: JSON.stringify(fileMetadata),
+		});
+
+		console.log(res)
+
+		const file = await res.json()
+
+		return JSON.stringify(file) // Folder ID
+
+	} catch (e: any) {
+
+		console.log(e.message)
+
+		return
+
+	}
 }
