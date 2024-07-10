@@ -3,9 +3,8 @@
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
 import { dateFormatter } from "@/lib/utils"
 import { ResponseMessage } from "@/types/custom-types"
-import { Bill, PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
+import prisma from "@/lib/db"
+import { Bill } from "@prisma/client"
 
 export async function createNewReceipt(data: any) {
 

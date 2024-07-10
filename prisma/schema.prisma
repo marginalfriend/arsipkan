@@ -13,6 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Developer {
+  id        String    @id @default(uuid())
+  name      String
+  folder_id String
+  Companies Company[]
+}
+
+model Company {
+  id           String    @id @default(uuid())
+  name         String
+  folder_id    String
+  developer_id String
+  developer    Developer @relation(fields: [developer_id], references: [id])
+  SPK          SPK[]
+}
+
 model City {
   id   String @id
   name String
@@ -20,42 +36,43 @@ model City {
 }
 
 model SPK {
-  id                String   @id @default(uuid())
-  number            String   @unique
-  clientCompanyName String
-  projectName       String
-  value             Int
-  date              DateTime
-  folderId          String
-  cityId            String
-  city              City     @relation(fields: [cityId], references: [id])
-  Bill              Bill[]
+  id           String   @id @default(uuid())
+  number       String   @unique
+  company_id   String
+  company      Company  @relation(fields: [company_id], references: [id])
+  project_name String
+  value        Int
+  date         DateTime
+  folder_id    String
+  city_id      String
+  city         City     @relation(fields: [city_id], references: [id])
+  Bill         Bill[]
 }
 
 model Bill {
-  id              String          @id @default(uuid())
-  billSequence    Int             @default(autoincrement())
-  receiptSequence Int             @default(autoincrement())
-  issuer          String
-  date            DateTime        @default(now())
-  amount          Int
-  vat             Int
-  receiver        String
-  spk             SPK             @relation(fields: [spkId], references: [id])
-  spkId           String
-  SignedInvoice   SignedInvoice[]
-  SignedReceipt   SignedReceipt[]
+  id               String          @id @default(uuid())
+  bill_sequence    Int             @default(autoincrement())
+  receipt_sequence Int             @default(autoincrement())
+  issuer           String
+  date             DateTime        @default(now())
+  amount           Int
+  vat              Int
+  receiver         String
+  spk              SPK             @relation(fields: [spk_id], references: [id])
+  spk_id           String
+  SignedInvoice    SignedInvoice[]
+  SignedReceipt    SignedReceipt[]
 }
 
 model SignedInvoice {
-  id     String @id @default(uuid())
-  docId  String
-  bill   Bill   @relation(fields: [billId], references: [id])
-  billId String
+  id      String @id @default(uuid())
+  doc_id  String
+  bill_id String
+  Bill    Bill   @relation(fields: [bill_id], references: [id])
 }
 
 model SignedReceipt {
-  id     String @id @default(uuid())
-  bill   Bill   @relation(fields: [billId], references: [id])
-  billId String
+  id      String @id @default(uuid())
+  bill_id String
+  Bill    Bill   @relation(fields: [bill_id], references: [id])
 }

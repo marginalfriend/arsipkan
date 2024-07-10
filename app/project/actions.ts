@@ -1,6 +1,6 @@
 "use server"
 
-import { PrismaClient, Prisma } from "@prisma/client"
+import prisma from "@/lib/db";
 import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
 import { ResponseMessage } from "@/types/custom-types";
@@ -8,9 +8,6 @@ import { dateFormatter } from "@/lib/utils";
 import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/req"
 import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
 import { getAuthHeaderBearer } from "@/lib/auth-utils";
-
-
-const prisma = new PrismaClient()
 
 export async function getProjects() {
 	var result: Project[] = [];
@@ -23,14 +20,19 @@ export async function getProjects() {
 					select: {
 						name: true,
 					}
+				},
+				company: {
+					select: {
+						name: true
+					}
 				}
 			}
 		})).forEach(data => {
 			result.push(
 				{
 					spkNumber: data.number,
-					clientName: data.clientCompanyName,
-					projectName: data.projectName,
+					clientName: data.company.name,
+					projectName: data.project_name,
 					date: dateFormatter(data.date),
 					city: data.city.name,
 					value: data.value,
@@ -54,7 +56,7 @@ export async function createProject(req: any) {
 	}
 
 	try {
-		
+
 		const folderId = await createFolder(req.projectName)
 
 		if (!folderId) {
@@ -78,12 +80,12 @@ export async function createProject(req: any) {
 		await prisma.sPK.create({
 			data: {
 				number: req.spkNumber,
-				clientCompanyName: req.clientName,
-				folderId: folderId,
-				projectName: req.projectName,
+				company_id: req.company_id,
+				folder_id: folderId,
+				project_name: req.projectName,
 				value: parseInt(req.value),
 				date: req.date.toISOString(),
-				cityId: city.id
+				city_id: city.id
 			}
 		})
 
