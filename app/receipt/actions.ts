@@ -2,11 +2,13 @@
 
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
 import { dateFormatter } from "@/lib/utils"
+import { ResponseMessage } from "@/types/custom-types"
 import { Bill, PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
 export async function createNewReceipt(data: any) {
+
 	const authHeader = await getAuthHeaderBearer()
 	const sheetName = 'Kwitansi_Template'
 
@@ -102,29 +104,67 @@ export async function createNewReceipt(data: any) {
 	console.log(result)
 }
 
-async function insertNewReceipt(data: Bill) {
-	var spk;
-
-	prisma.sPK.findUnique({
-		where: { id: data.spkId }
-	}).then(spk => spk = spk)
-
-	if (!spk) {
-		return
+export async function insertNewReceipt(data: Bill) {
+	var response: ResponseMessage = {
+		message: "",
+		description: "",
+		toastVariant: "default"
 	}
 
-	prisma.bill.create({
-		data: {
-			billSequence: data.billSequence,
-			receiptSequence: data.receiptSequence,
-			issuer: data.issuer,
-			date: data.date,
-			amount: data.amount,
-			vat: data.vat,
-			receiver: data.receiver,
-			spk: spk,
-		}
-	})
+	try {
+		await prisma.bill.create({
+			data: {
+				billSequence: data.billSequence,
+				receiptSequence: data.receiptSequence,
+				issuer: data.issuer,
+				date: data.date,
+				amount: data.amount,
+				vat: data.vat,
+				receiver: data.receiver,
+				spkId: data.spkId,
+			}
+		})
+
+		response.message = "Berhasil menerbitkan tagihan"
+	} catch (e) {
+		response.message = "Gagal menerbitkan tagihan"
+		response.description = "Ada kesalahan dalam menerbitkan tagihan"
+		response.toastVariant = "destructive"
+	}
+
+	return response
 }
 
-export const spks = async () => await prisma.sPK.findMany()
+export async function getReceipts() {
+	var result: Bill[] = [];
+
+	try {
+		(await prisma.bill.findMany({
+			include: {
+				spk: {
+					select: {
+						projectName: true
+					}
+				}
+			}
+		})).forEach(data => {
+			return result.push({
+				id: data.id,
+				billSequence: data.billSequence,
+				receiptSequence: data.receiptSequence,
+				issuer: data.issuer,
+				date: data.date,
+				amount: data.amount,
+				vat: data.vat,
+				receiver: data.receiver,
+				spkId: data.spk.projectName
+			})
+		});
+	} catch (e) {
+		console.error(e)
+	}
+
+	return result
+}
+
+export const getSPKs = async () => await prisma.sPK.findMany()

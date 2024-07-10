@@ -3,6 +3,8 @@
 import { PrismaClient, Prisma } from "@prisma/client"
 import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
+import { ResponseMessage } from "@/types/custom-types";
+import { dateFormatter } from "@/lib/utils";
 
 
 
@@ -27,7 +29,7 @@ export async function getProjects() {
 					spkNumber: data.number,
 					clientName: data.clientCompanyName,
 					projectName: data.projectName,
-					date: data.date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+					date: dateFormatter(data.date),
 					city: data.city.name,
 					value: data.value,
 					remaining: data.value
@@ -43,9 +45,11 @@ export async function getProjects() {
 }
 
 export async function createProject(req: any) {
-	var message;
-	var description;
-	var toastVariant: "default" | "destructive" | null | undefined;
+	var response: ResponseMessage = {
+		message: "",
+		description: "",
+		toastVariant: "default"
+	}
 
 	try {
 		const cityJson = JSON.parse(req.city)
@@ -72,20 +76,20 @@ export async function createProject(req: any) {
 			}
 		})
 
-		message = "Berhasil membuat projek baru"
-		description = "Projek baru dari " + req.clientName + " untuk " + req.projectName
-		toastVariant = "default"
+		response.message = "Berhasil membuat projek baru"
+		response.description = "Projek baru dari " + req.clientName + " untuk " + req.projectName
+		response.toastVariant = "default"
 
 	} catch (e) {
 		console.error(e)
 
-		message = "Gagal membuat projek baru"
-		description = "Ada kesalahan dalam pembuatan projek baru"
-		toastVariant = "destructive"
+		response.message = "Gagal membuat projek baru"
+		response.description = "Ada kesalahan dalam pembuatan projek baru"
+		response.toastVariant = "destructive"
 
 	}
 
-	return { message, description, toastVariant }
+	return response
 }
 
 export async function getProvinces() {

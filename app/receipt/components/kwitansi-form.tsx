@@ -16,31 +16,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { createNewReceipt } from "../actions";
+import { createNewReceipt, insertNewReceipt } from "../actions";
 import { DatePicker } from "@/components/date-picker";
 import { SPKPicker } from "./spk-picker";
+import { Bill } from "@prisma/client";
 
 const FormSchema = z.object({
-  diterimaDari: z.string(),
-  nomorKwitansi: z.string(),
-  uangSejumlah: z.string(),
-  realCost: z.string(),
-  untukPembayaran: z.string(),
-  yangMenerima: z.string(),
+  billSequence: z.string(),
+  receiptSequence: z.string(),
+  amount: z.string(),
+  vat: z.string(),
+  issuer: z.string(),
+  receiver: z.string(),
   spk: z.string(),
-  kota: z.string(),
   date: z.date(),
 });
 
 type NameField =
-  | "diterimaDari"
-  | "nomorKwitansi"
-  | "uangSejumlah"
-  | "realCost"
-  | "untukPembayaran"
-  | "yangMenerima"
-  | "spk"
-  | "kota";
+  | "billSequence"
+  | "receiptSequence"
+  | "amount"
+  | "vat"
+  | "issuer"
+  | "receiver";
 
 type KwitansiFormField = {
   name: NameField;
@@ -54,79 +52,81 @@ export function KwitansiForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      diterimaDari: "",
-      nomorKwitansi: "",
-      uangSejumlah: "",
-      realCost: "",
-      untukPembayaran: "",
-      yangMenerima: "",
+      billSequence: "",
+      receiptSequence: "",
+      amount: "",
+      vat: "",
+      issuer: "",
+      receiver: "",
       spk: "",
-      kota: "",
       date: new Date(),
     },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log("Submit invoked");
-    createNewReceipt(data);
+    const toDatabase: Bill = {
+      id: "",
+      receiptSequence: parseInt(data.receiptSequence),
+      billSequence: parseInt(data.billSequence),
+      issuer: data.issuer,
+      date: data.date,
+      amount: parseInt(data.amount),
+      vat: data.vat ? parseInt(data.vat) : parseInt(data.amount) * (11 / 100),
+      receiver: data.receiver,
+      spkId: data.spk,
+    };
+
+    insertNewReceipt(toDatabase).then((result) => {
+      toast({
+        variant: result.toastVariant,
+        title: result.message,
+        description: result.description,
+      });
+    });
   };
 
   const kwitansiFormFields: KwitansiFormField[] = [
     {
-      name: "diterimaDari",
+      name: "billSequence",
       type: "text",
-      label: "Diterima Dari",
-      placeHolder: "PT. SUMBER JAYA MAKMUR",
-      description: "Orang / entitas yang memberikan uang",
+      label: "Urutan Tagihan",
+      placeHolder: "1",
+      description: "Urutan tagihan berdasarkan projek",
     },
     {
-      name: "nomorKwitansi",
+      name: "receiptSequence",
       type: "text",
-      label: "Nomor Kwitansi",
-      placeHolder: "866/KWT-DM/SKM-KML/VI/2024",
-      description: "Nomor kwitansi sesuai dengan format",
+      label: "Nomor Kwitansi / Invoice",
+      placeHolder: "911",
+      description: "Nomor kwitansi / invoice",
     },
     {
-      name: "uangSejumlah",
+      name: "issuer",
       type: "text",
-      label: "Uang Sejumlah",
-      placeHolder: "100000",
-      description: "Jumlah uang yang diterima",
+      label: "Penerbit Tagihan",
+      placeHolder: "Daffa Moreri",
+      description: "Yang menulis tagihan",
     },
     {
-      name: "realCost",
+      name: "receiver",
       type: "text",
-      label: "Biaya Ril",
-      placeHolder: "2000000",
-      description: "Biaya total yang harus dibayar",
+      label: "Penerima",
+      placeHolder: "Rivai Madah",
+      description: "Uang dari tagihan",
     },
     {
-      name: "untukPembayaran",
+      name: "amount",
       type: "text",
-      label: "Untuk Pembayaran",
-      placeHolder: "Retensi 5%, Pekerjaan Sipil ...",
-      description: "Jumlah uang yang diterima",
+      label: "Jumlah",
+      placeHolder: "500000000",
+      description: "Jumlah tunai yang ditagih",
     },
     {
-      name: "yangMenerima",
+      name: "vat",
       type: "text",
-      label: "Yang Menerima",
-      placeHolder: "BUDI",
-      description: "Orang yang bertanggung jawab menerima uang",
-    },
-    // {
-    //   name: "nomorSpk",
-    //   type: "text",
-    //   label: "Nomor SPK",
-    //   placeHolder: "KML/PO/XX/XX/XXXXX",
-    //   description: "Nomor SPK yang menjadi acuan pengerjaan",
-    // },
-    {
-      name: "kota",
-      type: "text",
-      label: "Kota",
-      placeHolder: "Jakarta",
-      description: "Kota tempat transaksi berlangsung",
+      label: "Pajak",
+      placeHolder: "5500000",
+      description: "Pajak dari tagihan (kosongkan jika 11%)",
     },
   ];
 
@@ -136,6 +136,7 @@ export function KwitansiForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 border p-4 rounded-lg"
       >
+        <SPKPicker form={form} />
         {kwitansiFormFields.map((kwitansiField: KwitansiFormField) => {
           return (
             <FormField
@@ -160,7 +161,6 @@ export function KwitansiForm() {
           );
         })}
         <DatePicker form={form} />
-        <SPKPicker form={form} />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
