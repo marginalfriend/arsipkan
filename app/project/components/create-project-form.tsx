@@ -52,14 +52,6 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    createFolder(data.projectName).then((result) => {
-      console.log(result);
-      toast({
-        // variant: result.toastVariant,
-        title: "Fetch Result",
-        description: result,
-      });
-    });
     // createProject(data).then((result) => {
     //   toast({
     //     variant: result.toastVariant,

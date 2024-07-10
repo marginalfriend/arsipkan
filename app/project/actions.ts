@@ -54,6 +54,13 @@ export async function createProject(req: any) {
 	}
 
 	try {
+		
+		const folderId = await createFolder(req.projectName)
+
+		if (!folderId) {
+			throw new Error("Failed creating new drive folder")
+		}
+
 		const cityJson = JSON.parse(req.city)
 		const city = await prisma.city.upsert({
 			where: {
@@ -67,7 +74,6 @@ export async function createProject(req: any) {
 			}
 		})
 
-		const folderId = await createFolder(req.projectName)
 
 		await prisma.sPK.create({
 			data: {
@@ -131,7 +137,7 @@ export async function createFolder(projectName: string) {
 	const fileMetadata = {
 		name: projectName,
 		mimeType: MIME_TYPE_FOLDER,
-		// parents: [ROOT_DRIVE_FOLDER_ID]
+		parents: [ROOT_DRIVE_FOLDER_ID]
 	}
 
 	const authHeader = await getAuthHeaderBearer()
