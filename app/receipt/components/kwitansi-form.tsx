@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { createNewReceipt } from "../actions";
 import { SPKPicker } from "./spk-picker";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   // billSequence: z.string(),
@@ -52,6 +53,7 @@ type KwitansiFormField = {
 };
 
 export function KwitansiForm() {
+	const router = useRouter()
   const form = useForm<KwitansiSchema>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -73,7 +75,9 @@ export function KwitansiForm() {
         title: result.message,
         description: result.description,
       });
-    });
+    }).then(router.refresh);
+
+		form.reset()
   };
 
   const kwitansiFormFields: KwitansiFormField[] = [
@@ -132,7 +136,7 @@ export function KwitansiForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 border p-4 rounded-lg"
+        className="w-full space-y-6 p-4"
       >
         <SPKPicker form={form} />
         {kwitansiFormFields.map((kwitansiField: KwitansiFormField) => {

@@ -17,7 +17,7 @@ export function CreateKwitansiDialog() {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Buat Kwitansi Baru</DialogTitle>
+          <DialogTitle className="text-center font-semibold text-2xl">Buat Kwitansi Baru</DialogTitle>
         </DialogHeader>
 
         <div className="h-[80vh] overflow-y-auto">
