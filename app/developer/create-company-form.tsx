@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createCompany } from "./actions";
-import DeveloperPicker from "./developer-picker";
+import { DeveloperPicker } from "./developer-picker";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
@@ -28,7 +28,7 @@ const FormSchema = z.object({
 });
 
 export function CreateCompanyForm() {
-	const router = useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -40,16 +40,16 @@ export function CreateCompanyForm() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     const devObject = JSON.parse(data.developer);
 
-    createCompany({ name: data.name, developerId: devObject.id }).then(
-      (result) => {
+    createCompany({ name: data.name, developerId: devObject.id })
+      .then((result) => {
         toast({
           title: result.message,
           description: result.description,
         });
-      }
-    ).then(router.refresh);
+      })
+      .then(router.refresh);
 
-		form.reset()
+    form.reset();
   };
 
   return (
@@ -59,8 +59,7 @@ export function CreateCompanyForm() {
         className="space-y-8 border p-4 rounded h-full"
       >
         <h2 className="text-center font-semibold text-xl">Perusahaan / PT</h2>
-        <DeveloperPicker form={form} />{" "}
-        {/*value={JSON.stringify({id: dev.id, name: dev.name, */}
+        <DeveloperPicker form={form} />
         <FormField
           control={form.control}
           name="name"

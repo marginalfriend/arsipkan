@@ -90,43 +90,43 @@ export async function createCompany({ name, developerId }: { name: string, devel
 
 	try {
 
-		// const developer = await prisma.developer.findFirst({
-		// 	select: {
-		// 		folder_id: true
-		// 	},
-		// 	where: {
-		// 		id: developerId
-		// 	}
-		// })
+		const developer = await prisma.developer.findFirst({
+			select: {
+				folder_id: true
+			},
+			where: {
+				id: developerId
+			}
+		})
 
-		// if (!developer) {
-		// 	throw new Error("Failed creating company data.")
-		// }
+		if (!developer) {
+			throw new Error("Failed creating company data.")
+		}
 
-		// const developerFolderId = JSON.parse(developer.folder_id)
+		const developerFolderId = JSON.parse(developer.folder_id)
 
-		// console.log("Developer folder id: " + developerFolderId)
+		console.log("Developer folder id: " + developerFolderId)
 
-		// if (!developerFolderId) {
-		// 	throw new Error("Failed while creating company data.")
-		// }
+		if (!developerFolderId) {
+			throw new Error("Failed while creating company data.")
+		}
 
-		// const folderId = await createCompanyFolder(name, developerFolderId)
+		const folderId = await createCompanyFolder(name, developerFolderId)
 
-		// if (!folderId) {
-		// 	throw new Error("Failed while creating company data.")
-		// }
+		if (!folderId) {
+			throw new Error("Failed while creating company data.")
+		}
 
-		// await prisma.company.create({
-		// 	data: {
-		// 		name: name,
-		// 		folder_id: folderId,
-		// 		developer_id: developerId
-		// 	}
-		// })
+		await prisma.company.create({
+			data: {
+				name: name,
+				folder_id: folderId,
+				developer_id: developerId
+			}
+		})
 
-		// message.message = "Berhasil membuat data perusahaan"
-		// message.description = "Entry data perusahaan berhasil dibuat"
+		message.message = "Berhasil membuat data perusahaan"
+		message.description = "Entry data perusahaan berhasil dibuat"
 
 		revalidatePath("/developer", "page")
 		redirect("/developer")
@@ -175,24 +175,22 @@ export async function createCompanyFolder(name: string, parentFolderId: string) 
 
 	} catch (e: any) {
 
-		console.log(e.message)
-
-		return
+		throw new Error(e.message)
 
 	}
 }
 
-export async function getDeveloepr() {
-	const companies = await prisma.developer.findMany({
+export async function getDeveloper() {
+	const developers = await prisma.developer.findMany({
 		select: {
 			id: true,
 			name: true,
 		}
 	})
 
-	if (!companies) {
+	if (!developers) {
 		throw new Error("Developer is empty")
 	}
 
-	return companies
+	return developers
 }

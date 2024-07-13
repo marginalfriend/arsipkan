@@ -4,6 +4,10 @@ import Link from "next/link";
 import AuthButton from "./auth-button";
 
 const routes = [
+	{
+		href: "/developer",
+		label: "Developer",
+	},
   {
     href: "/project",
     label: "Projek",
@@ -11,10 +15,6 @@ const routes = [
   {
     href: "/receipt",
     label: "Kwitansi",
-  },
-  {
-    href: "/developer",
-    label: "Developer",
   },
 ];
 

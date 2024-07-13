@@ -1,3 +1,5 @@
+"use client"
+
 import {
   FormControl,
   FormDescription,
@@ -14,9 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { getDeveloepr } from "./actions";
+import { getDeveloper } from "./actions";
 
-export default function DeveloperPicker(form: any) {
+export function DeveloperPicker(form: any) {
   type Developer = {
     id: string;
     name: string;
@@ -24,8 +26,14 @@ export default function DeveloperPicker(form: any) {
 
   const [developers, setDevelopers] = useState<Developer[]>([]);
 
+	// TO DO: Fix fetch developers
+	const fetchDevelopers = () => {
+		console.log("Called")
+		getDeveloper().then((data) => setDevelopers(data))
+	}
+
   useEffect(() => {
-    getDeveloepr().then((data) => setDevelopers(data));
+    getDeveloper().then((data) => setDevelopers(data));
   }, []);
 
   return (
@@ -37,7 +45,7 @@ export default function DeveloperPicker(form: any) {
           <FormLabel>Developer</FormLabel>
           <Select onValueChange={field.onChange} defaultValue="">
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger onClick={fetchDevelopers}>
                 <SelectValue placeholder="Developer" />
               </SelectTrigger>
             </FormControl>
