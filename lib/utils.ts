@@ -42,3 +42,17 @@ export function monthToRoman(date: Date) {
 	const month = date.getMonth(); // getMonth() returns 0-11, so we need to add 1
 	return romanNumerals[month];
 }
+
+
+export function cityFormatter(input: string) {
+	// Define a regex to remove any prefix ending with a full stop and a space
+	const prefixRegex = /^[^.]+\.\s+/i;
+
+	// Remove the prefix
+	const withoutPrefix = input.replace(prefixRegex, '').toLowerCase();
+
+	// Capitalize the first letter of each word
+	const formattedCity = withoutPrefix.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+	return formattedCity;
+}

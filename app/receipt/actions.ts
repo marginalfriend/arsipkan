@@ -4,7 +4,7 @@ import { getAuthHeaderBearer } from "@/lib/auth-utils"
 import { KWITANSI_TEMPLATE_ID, MIME_TYPE_FOLDER } from "@/lib/constants"
 import prisma from "@/lib/db"
 import { GOOGLE_DOCS_API_URL, GOOGLE_DRIVE_API_URL } from "@/lib/url"
-import { createAbbreviation, dateFormatter, formatIDR, monthToRoman } from "@/lib/utils"
+import { cityFormatter, createAbbreviation, dateFormatter, formatIDR, monthToRoman } from "@/lib/utils"
 import { ResponseMessage } from "@/types/custom-types"
 import { Bill } from "@prisma/client"
 import { KwitansiSchema } from "./components/kwitansi-form"
@@ -45,7 +45,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 		console.log("Fetching google drive project folder id...")
 
 		const folderId = project.folder_id
-		const fetchList = await fetch(`${GOOGLE_DRIVE_API_URL}?q=%27${folderId}%27+in+parents&trashed=false`, {
+		const fetchList = await fetch(`${GOOGLE_DRIVE_API_URL}?q=%27${folderId}%27+in+parents&trashed+%3d+false`, {
 			method: 'GET',
 			headers: authHeader,
 		});
@@ -114,7 +114,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 		const totalCost = formatIDR(parseInt(data.amount) + parseInt(data.vat))
 		const vat = formatIDR(parseInt(data.vat))
 		const amount = formatIDR(parseInt(data.amount))
-		
+		const city = cityFormatter(project.city.name)
 		const clientCo = createAbbreviation(project.company.name)
 		const romanMonth = monthToRoman(data.date)
 		const year = data.date.getFullYear()
@@ -209,7 +209,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				},
 				{
 					replaceAllText: {
-						replaceText: project.city.name, // TODO: Format city
+						replaceText: city, // TODO: Format city
 						containsText: {
 							text: "{{city}}",
 							matchCase: true,
@@ -253,10 +253,6 @@ export async function createNewReceipt(data: KwitansiSchema) {
 			throw new Error("Failed editing document, Google API Error: " + fetchEditDoc.statusText)
 		}
 
-		console.log(fetchEditDoc)
-
-		const document = await fetchCopyDoc.json()
-
 		// 5. Persisting receipt to database
 
 		const bill = await prisma.bill.create({
@@ -275,7 +271,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 		await prisma.receipt.create({
 			data: {
 				bill_id: bill.id,
-				doc_id: document.id,
+				doc_id: copiedReceipt.id,
 			}
 		})
 
