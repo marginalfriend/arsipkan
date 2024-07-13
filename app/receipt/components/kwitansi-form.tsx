@@ -66,14 +66,14 @@ export function KwitansiForm() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     const toDatabase: Bill = {
       id: "",
-      receiptSequence: parseInt(data.receiptSequence),
-      billSequence: parseInt(data.billSequence),
+      receipt_sequence: parseInt(data.receiptSequence),
+      bill_sequence: parseInt(data.billSequence),
       issuer: data.issuer,
       date: data.date,
       amount: parseInt(data.amount),
       vat: data.vat ? parseInt(data.vat) : parseInt(data.amount) * (11 / 100),
       receiver: data.receiver,
-      spkId: data.spk,
+      spk_id: data.spk,
     };
 
     insertNewReceipt(toDatabase).then((result) => {
