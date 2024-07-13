@@ -4,15 +4,19 @@ import Link from "next/link";
 import AuthButton from "./auth-button";
 
 const routes = [
-	{
-		href: '/project',
-		label: 'Projek'
-	},
-	{
-		href: '/receipt',
-		label: 'Kwitansi'
-	}
-]
+  {
+    href: "/project",
+    label: "Projek",
+  },
+  {
+    href: "/receipt",
+    label: "Kwitansi",
+  },
+  {
+    href: "/developer",
+    label: "Developer",
+  },
+];
 
 export function Header() {
 

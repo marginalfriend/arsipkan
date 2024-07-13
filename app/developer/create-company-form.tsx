@@ -52,8 +52,13 @@ export function CreateCompanyForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <DeveloperPicker form={form} /> {/*value={JSON.stringify({id: dev.id, name: dev.name, */}
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 border p-4 rounded h-full"
+      >
+				<h2 className="text-center font-semibold text-xl">Perusahaan / PT</h2>
+        <DeveloperPicker form={form} />{" "}
+        {/*value={JSON.stringify({id: dev.id, name: dev.name, */}
         <FormField
           control={form.control}
           name="name"

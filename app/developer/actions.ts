@@ -1,7 +1,7 @@
 "use server"
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
 import prisma from "@/lib/db"
-import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/req"
+import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/constants"
 import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
 import { ResponseMessage } from "@/types/custom-types"
 

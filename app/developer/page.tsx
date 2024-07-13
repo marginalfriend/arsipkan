@@ -3,7 +3,7 @@ import { CreateDeveloperForm } from "./create-developer-form";
 
 export default function Page() {
 	return (
-		<main className="flex items-center justify-center gap-10 lg:px-4 m-0 mb-24 max-w-[100vw]">
+		<main className="grid grid-cols-2 items-center justify-center gap-5 lg:px-4 m-0 mb-24 max-w-[100vw]">
 			<CreateDeveloperForm />
 			<CreateCompanyForm />
 		</main>

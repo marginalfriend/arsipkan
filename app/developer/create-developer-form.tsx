@@ -41,7 +41,11 @@ export function CreateDeveloperForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 border p-4 rounded h-full"
+      >
+        <h2 className="text-center font-semibold text-xl">Developer</h2>
         <FormField
           control={form.control}
           name="name"
@@ -51,9 +55,7 @@ export function CreateDeveloperForm() {
               <FormControl>
                 <Input placeholder="Sinar Mas" {...field} />
               </FormControl>
-              <FormDescription>
-                Tulis nama developer.
-              </FormDescription>
+              <FormDescription>Tulis nama developer.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
