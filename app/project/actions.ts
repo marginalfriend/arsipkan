@@ -5,7 +5,7 @@ import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
 import { ResponseMessage } from "@/types/custom-types";
 import { dateFormatter } from "@/lib/utils";
-import { MIME_TYPE_FOLDER } from "@/lib/req"
+import { MIME_TYPE_FOLDER } from "@/lib/constants"
 import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
 import { getAuthHeaderBearer } from "@/lib/auth-utils";
 

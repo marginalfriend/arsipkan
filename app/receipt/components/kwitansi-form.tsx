@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { DatePicker } from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,16 +16,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { createNewReceipt, insertNewReceipt } from "../actions";
-import { DatePicker } from "@/components/date-picker";
+import { createNewReceipt } from "../actions";
 import { SPKPicker } from "./spk-picker";
-import { Bill } from "@prisma/client";
+import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
-  billSequence: z.string(),
+  // billSequence: z.string(),
   receiptSequence: z.string(),
   amount: z.string(),
+  paymentFor: z.string(),
   vat: z.string(),
   issuer: z.string(),
   receiver: z.string(),
@@ -32,9 +32,12 @@ const FormSchema = z.object({
   date: z.date(),
 });
 
+export type KwitansiSchema = z.infer<typeof FormSchema>
+
 type NameField =
-  | "billSequence"
+  // | "billSequence"
   | "receiptSequence"
+  | "paymentFor"
   | "amount"
   | "vat"
   | "issuer"
@@ -49,10 +52,10 @@ type KwitansiFormField = {
 };
 
 export function KwitansiForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<KwitansiSchema>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      billSequence: "",
+      // billSequence: "",
       receiptSequence: "",
       amount: "",
       vat: "",
@@ -64,19 +67,7 @@ export function KwitansiForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    const toDatabase: Bill = {
-      id: "",
-      receipt_sequence: parseInt(data.receiptSequence),
-      bill_sequence: parseInt(data.billSequence),
-      issuer: data.issuer,
-      date: data.date,
-      amount: parseInt(data.amount),
-      vat: data.vat ? parseInt(data.vat) : parseInt(data.amount) * (11 / 100),
-      receiver: data.receiver,
-      spk_id: data.spk,
-    };
-
-    insertNewReceipt(toDatabase).then((result) => {
+    createNewReceipt(data).then((result) => {
       toast({
         variant: result.toastVariant,
         title: result.message,
@@ -86,13 +77,13 @@ export function KwitansiForm() {
   };
 
   const kwitansiFormFields: KwitansiFormField[] = [
-    {
-      name: "billSequence",
-      type: "text",
-      label: "Urutan Tagihan",
-      placeHolder: "1",
-      description: "Urutan tagihan berdasarkan projek",
-    },
+    // {
+    //   name: "billSequence",
+    //   type: "text",
+    //   label: "Urutan Tagihan",
+    //   placeHolder: "1",
+    //   description: "Urutan tagihan berdasarkan projek",
+    // },
     {
       name: "receiptSequence",
       type: "text",
@@ -115,6 +106,13 @@ export function KwitansiForm() {
       description: "Uang dari tagihan",
     },
     {
+      name: "paymentFor",
+      type: "text",
+      label: "Untuk Pembayaran",
+      placeHolder: "Retensi 5%",
+      description: "Keterangan kwitansi",
+    },
+    {
       name: "amount",
       type: "text",
       label: "Jumlah",
@@ -126,7 +124,7 @@ export function KwitansiForm() {
       type: "text",
       label: "Pajak",
       placeHolder: "5500000",
-      description: "Pajak dari tagihan (kosongkan jika 11%)",
+      description: "Pajak dari tagihan",
     },
   ];
 

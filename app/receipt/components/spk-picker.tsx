@@ -43,7 +43,7 @@ export function SPKPicker(form: any) {
               {spk.map((spk: SPK) => {
                 return (
                   <SelectItem key={spk.id} value={spk.id}>
-                    {spk.projectName}
+                    {spk.project_name}
                   </SelectItem>
                 );
               })}
