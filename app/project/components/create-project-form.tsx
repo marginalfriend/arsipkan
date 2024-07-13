@@ -22,6 +22,7 @@ import { CityPicker } from "./city-picker";
 import CompanyPicker from "./company-picker";
 
 const FormSchema = z.object({
+	company: z.string(),
   spkNumber: z.string(),
   clientName: z.string(),
   projectName: z.string(),

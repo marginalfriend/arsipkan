@@ -55,13 +55,17 @@ export async function createProject(req: any) {
 		toastVariant: "default"
 	}
 
+	console.log(req)
+
+	const companyObject = JSON.parse(req.company)
+
 	try {
 		const parent = await prisma.company.findFirst({
 			select: {
 				folder_id: true
 			},
 			where: {
-				id: req.company.id
+				id: companyObject.id,
 			}
 		})
 
@@ -94,7 +98,7 @@ export async function createProject(req: any) {
 		await prisma.sPK.create({
 			data: {
 				number: req.spkNumber,
-				company_id: req.company.id,
+				company_id: companyObject.id,
 				folder_id: folderId,
 				project_name: req.projectName,
 				value: parseInt(req.value),
@@ -166,11 +170,15 @@ export async function createFolder({ projectName, parentFolderId }: { projectNam
 			body: JSON.stringify(fileMetadata),
 		});
 
+		if (res.status !== 200) {
+			throw new Error("Google API Error: " + res.statusText)
+		}
+
 		console.log(res)
 
 		const file = await res.json()
 
-		return JSON.stringify(file) // Folder ID
+		return JSON.stringify(file.id) // Folder ID
 
 	} catch (e: any) {
 

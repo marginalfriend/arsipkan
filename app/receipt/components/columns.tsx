@@ -17,15 +17,15 @@ import { dateFormatter } from "@/lib/utils";
 
 export const columns: ColumnDef<Bill>[] = [
   {
-    accessorKey: "spkId",
+    accessorKey: "spk_id",
     header: "Projek",
   },
   {
-    accessorKey: "billSequence",
+    accessorKey: "bill_Sequence",
     header: "Urutan",
   },
   {
-    accessorKey: "receiptSequence",
+    accessorKey: "receipt_sequence",
     header: "Nomor Kwitansi / Invoice",
   },
   {
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Bill>[] = [
             <DropdownMenuItem
               onClick={() =>
                 navigator.clipboard.writeText(
-                  receipt.receiptSequence.toString()
+                  receipt.receipt_sequence.toString()
                 )
               }
             >
