@@ -113,14 +113,14 @@ export async function insertNewReceipt(data: Bill) {
 	try {
 		await prisma.bill.create({
 			data: {
-				billSequence: data.billSequence,
-				receiptSequence: data.receiptSequence,
+				bill_sequence: data.bill_sequence,
+				receipt_sequence: data.receipt_sequence,
 				issuer: data.issuer,
 				date: data.date,
 				amount: data.amount,
 				vat: data.vat,
 				receiver: data.receiver,
-				spkId: data.spkId,
+				spk_id: data.spk_id,
 			}
 		})
 
@@ -142,21 +142,21 @@ export async function getReceipts() {
 			include: {
 				spk: {
 					select: {
-						projectName: true
+						project_name: true
 					}
 				}
 			}
 		})).forEach(data => {
 			return result.push({
 				id: data.id,
-				billSequence: data.billSequence,
-				receiptSequence: data.receiptSequence,
+				bill_sequence: data.bill_sequence,
+				receipt_sequence: data.receipt_sequence,
 				issuer: data.issuer,
 				date: data.date,
 				amount: data.amount,
 				vat: data.vat,
 				receiver: data.receiver,
-				spkId: data.spk.projectName
+				spk_id: data.spk.project_name
 			})
 		});
 	} catch (e) {
