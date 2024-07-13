@@ -1,21 +1,22 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { createCompany } from "./actions";
-import { toast } from "@/components/ui/use-toast";
 import DeveloperPicker from "./developer-picker";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   developer: z.string({
@@ -27,6 +28,7 @@ const FormSchema = z.object({
 });
 
 export function CreateCompanyForm() {
+	const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -38,8 +40,6 @@ export function CreateCompanyForm() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     const devObject = JSON.parse(data.developer);
 
-		console.log(devObject.id)
-
     createCompany({ name: data.name, developerId: devObject.id }).then(
       (result) => {
         toast({
@@ -47,7 +47,9 @@ export function CreateCompanyForm() {
           description: result.description,
         });
       }
-    );
+    ).then(router.refresh);
+
+		form.reset()
   };
 
   return (
@@ -56,7 +58,7 @@ export function CreateCompanyForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 border p-4 rounded h-full"
       >
-				<h2 className="text-center font-semibold text-xl">Perusahaan / PT</h2>
+        <h2 className="text-center font-semibold text-xl">Perusahaan / PT</h2>
         <DeveloperPicker form={form} />{" "}
         {/*value={JSON.stringify({id: dev.id, name: dev.name, */}
         <FormField

@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { createDeveloper } from "./actions";
 import { toast } from "@/components/ui/use-toast";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   name: z.string({
@@ -23,6 +25,7 @@ const FormSchema = z.object({
 });
 
 export function CreateDeveloperForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -31,12 +34,16 @@ export function CreateDeveloperForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    createDeveloper(data.name).then((data) => {
-			toast({
-				title: data.message,
-				description: data.description
-			})
-		})
+    createDeveloper(data.name)
+      .then((data) => {
+        toast({
+          title: data.message,
+          description: data.description,
+        });
+      })
+      .then(router.refresh);
+
+    form.reset();
   };
 
   return (

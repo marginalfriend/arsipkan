@@ -1,9 +1,11 @@
 "use server"
 import { getAuthHeaderBearer } from "@/lib/auth-utils"
-import prisma from "@/lib/db"
 import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/constants"
+import prisma from "@/lib/db"
 import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
 import { ResponseMessage } from "@/types/custom-types"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 export async function createDeveloper(name: string) {
 
@@ -31,17 +33,15 @@ export async function createDeveloper(name: string) {
 		message.message = "Berhasil membuat developer"
 		message.description = "Entry developer berhasil dibuat"
 
-		return message
-
 	} catch (e) {
 
 		message.message = "Gagal membuat developer"
 		message.description = "Ada kesalahan dalam membuat entry developer"
 		message.toastVariant = "destructive"
 
-		return message
-
 	}
+
+	return message
 }
 
 export async function createDeveloperFolder(name: string) {
@@ -61,7 +61,9 @@ export async function createDeveloperFolder(name: string) {
 			body: JSON.stringify(fileMetadata),
 		});
 
-		console.log(res)
+		if (res.status != 200) {
+			throw new Error("Failed creating developer folder, Google API error: " + res.statusText)
+		}
 
 		const file = await res.json()
 
@@ -88,44 +90,46 @@ export async function createCompany({ name, developerId }: { name: string, devel
 
 	try {
 
-		const developer = await prisma.developer.findFirst({
-			select: {
-				folder_id: true
-			},
-			where: {
-				id: developerId
-			}
-		})
+		// const developer = await prisma.developer.findFirst({
+		// 	select: {
+		// 		folder_id: true
+		// 	},
+		// 	where: {
+		// 		id: developerId
+		// 	}
+		// })
 
-		if (!developer) {
-			throw new Error("Failed creating company data.")
-		}
+		// if (!developer) {
+		// 	throw new Error("Failed creating company data.")
+		// }
 
-		const developerFolderId = JSON.parse(developer.folder_id)
+		// const developerFolderId = JSON.parse(developer.folder_id)
 
-		console.log("Developer folder id: " + developerFolderId)
+		// console.log("Developer folder id: " + developerFolderId)
 
-		if (!developerFolderId) {
-			throw new Error("Failed while creating company data.")
-		}
+		// if (!developerFolderId) {
+		// 	throw new Error("Failed while creating company data.")
+		// }
 
-		const folderId = await createCompanyFolder(name, developerFolderId)
+		// const folderId = await createCompanyFolder(name, developerFolderId)
 
-		if (!folderId) {
-			throw new Error("Failed while creating company data.")
-		}
+		// if (!folderId) {
+		// 	throw new Error("Failed while creating company data.")
+		// }
 
-		await prisma.company.create({
-			data: {
-				name: name,
-				folder_id: folderId,
-				developer_id: developerId
-			}
-		})
+		// await prisma.company.create({
+		// 	data: {
+		// 		name: name,
+		// 		folder_id: folderId,
+		// 		developer_id: developerId
+		// 	}
+		// })
 
-		message.message = "Berhasil membuat data perusahaan"
-		message.description = "Entry data perusahaan berhasil dibuat"
+		// message.message = "Berhasil membuat data perusahaan"
+		// message.description = "Entry data perusahaan berhasil dibuat"
 
+		revalidatePath("/developer", "page")
+		redirect("/developer")
 
 	} catch (e) {
 
@@ -153,6 +157,10 @@ export async function createCompanyFolder(name: string, parentFolderId: string) 
 			headers: authHeader,
 			body: JSON.stringify(fileMetadata),
 		});
+
+		if (res.status != 200) {
+			throw new Error("Failed creating developer folder, Google API error: " + res.statusText)
+		}
 
 		const file = await res.json()
 
