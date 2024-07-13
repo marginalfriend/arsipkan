@@ -12,15 +12,15 @@ export async function createDeveloper(name: string) {
 		description: "",
 		toastVariant: "default"
 	}
-	
+
 	try {
-	
+
 		const folderId = await createDeveloperFolder(name)
-	
+
 		if (!folderId) {
 			throw new Error("Failed while creating ")
 		}
-	
+
 		await prisma.developer.create({
 			data: {
 				name: name,
@@ -65,7 +65,9 @@ export async function createDeveloperFolder(name: string) {
 
 		const file = await res.json()
 
-		return JSON.stringify(file) // Folder ID
+		console.log(file)
+
+		return JSON.stringify(file.id) // Folder ID
 
 	} catch (e: any) {
 
@@ -76,7 +78,7 @@ export async function createDeveloperFolder(name: string) {
 	}
 }
 
-export async function createCompany({name, developerId} : {name: string, developerId: string}) {
+export async function createCompany({ name, developerId }: { name: string, developerId: string }) {
 
 	const message: ResponseMessage = {
 		message: "",
@@ -99,7 +101,9 @@ export async function createCompany({name, developerId} : {name: string, develop
 			throw new Error("Failed creating company data.")
 		}
 
-		const developerFolderId = developer.folder_id
+		const developerFolderId = JSON.parse(developer.folder_id)
+
+		console.log("Developer folder id: " + developerFolderId)
 
 		if (!developerFolderId) {
 			throw new Error("Failed while creating company data.")
@@ -111,25 +115,26 @@ export async function createCompany({name, developerId} : {name: string, develop
 			throw new Error("Failed while creating company data.")
 		}
 
-		await prisma.developer.create({
+		await prisma.company.create({
 			data: {
 				name: name,
 				folder_id: folderId,
+				developer_id: developerId
 			}
 		})
 
 		message.message = "Berhasil membuat data perusahaan"
 		message.description = "Entry data perusahaan berhasil dibuat"
 
+
 	} catch (e) {
 
 		message.message = "Gagal membuat data perusahaan"
 		message.description = "Ada kesalahan dalam membuat entry data perusahaan"
 		message.toastVariant = "destructive"
-
-		return message
-
 	}
+
+	return message
 }
 
 export async function createCompanyFolder(name: string, parentFolderId: string) {
@@ -149,11 +154,16 @@ export async function createCompanyFolder(name: string, parentFolderId: string) 
 			body: JSON.stringify(fileMetadata),
 		});
 
-		console.log(res)
-
 		const file = await res.json()
 
-		return JSON.stringify(file) // Folder ID
+		console.log(file)
+
+		if (file.error) {
+			console.log(file.error)
+			return
+		}
+
+		return file.id // Folder ID
 
 	} catch (e: any) {
 
@@ -162,4 +172,19 @@ export async function createCompanyFolder(name: string, parentFolderId: string) 
 		return
 
 	}
+}
+
+export async function getDeveloepr() {
+	const companies = await prisma.developer.findMany({
+		select: {
+			id: true,
+			name: true,
+		}
+	})
+
+	if (!companies) {
+		throw new Error("Developer is empty")
+	}
+
+	return companies
 }

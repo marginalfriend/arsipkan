@@ -15,8 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { createCompany } from "./actions";
 import { toast } from "@/components/ui/use-toast";
+import DeveloperPicker from "./developer-picker";
 
 const FormSchema = z.object({
+  developer: z.string({
+    message: "Developer diperlukan",
+  }),
   name: z.string({
     message: "Nama diperlukan",
   }),
@@ -26,23 +30,30 @@ export function CreateCompanyForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      developer: "",
       name: "",
     },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-		// TO DO : Add a select options for developer
-    createCompany(data.name).then((data) => {
-      toast({
-        title: data.message,
-        description: data.description,
-      });
-    });
+    const devObject = JSON.parse(data.developer);
+
+		console.log(devObject.id)
+
+    createCompany({ name: data.name, developerId: devObject.id }).then(
+      (result) => {
+        toast({
+          title: result.message,
+          description: result.description,
+        });
+      }
+    );
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <DeveloperPicker form={form} /> {/*value={JSON.stringify({id: dev.id, name: dev.name, */}
         <FormField
           control={form.control}
           name="name"
@@ -57,7 +68,6 @@ export function CreateCompanyForm() {
             </FormItem>
           )}
         />
-        {/* TO DO : Add a select options for developer */}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

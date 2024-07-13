@@ -56,8 +56,22 @@ export async function createProject(req: any) {
 	}
 
 	try {
+		const parent = await prisma.company.findFirst({
+			select: {
+				folder_id: true
+			},
+			where: {
+				id: req.company.id
+			}
+		})
 
-		const folderId = await createFolder(req.projectName)
+		if (!parent) {
+			throw new Error("Company folder not found")
+		}
+
+		const parentFolderId = parent.folder_id
+
+		const folderId = await createFolder({ projectName: req.projectName, parentFolderId: parentFolderId })
 
 		if (!folderId) {
 			throw new Error("Failed creating new drive folder")
@@ -80,7 +94,7 @@ export async function createProject(req: any) {
 		await prisma.sPK.create({
 			data: {
 				number: req.spkNumber,
-				company_id: req.company_id,
+				company_id: req.company.id,
 				folder_id: folderId,
 				project_name: req.projectName,
 				value: parseInt(req.value),
@@ -135,11 +149,11 @@ export async function getCities(provinceId: number) {
 }
 
 // Create new folder and return folder id
-export async function createFolder(projectName: string) {
+export async function createFolder({ projectName, parentFolderId }: { projectName: string, parentFolderId: string }) {
 	const fileMetadata = {
 		name: projectName,
 		mimeType: MIME_TYPE_FOLDER,
-		parents: [ROOT_DRIVE_FOLDER_ID]
+		parents: [parentFolderId]
 	}
 
 	const authHeader = await getAuthHeaderBearer()
@@ -165,4 +179,19 @@ export async function createFolder(projectName: string) {
 		return
 
 	}
+}
+
+export async function getCompanies() {
+	const companies = await prisma.company.findMany({
+		select: {
+			id: true,
+			name: true,
+		}
+	})
+
+	if (!companies) {
+		throw new Error("Company is empty")
+	}
+
+	return companies
 }

@@ -17,8 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { createFolder, createProject } from "../actions";
 import { DatePicker } from "@/components/date-picker";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { CityPicker } from "./city-picker";
+import CompanyPicker from "./company-picker";
 
 const FormSchema = z.object({
   spkNumber: z.string(),
@@ -50,13 +51,13 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    // createProject(data).then((result) => {
-    //   toast({
-    //     variant: result.toastVariant,
-    //     title: result.message,
-    //     description: result.description,
-    //   });
-    // });
+    createProject(data).then((result) => {
+      toast({
+        variant: result.toastVariant,
+        title: result.message,
+        description: result.description,
+      });
+    });
   };
 
   const projectFormFields: ProjectFormField[] = [
@@ -96,6 +97,7 @@ export function CreateProjectForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 border p-4 rounded-lg m-0"
       >
+				<CompanyPicker form={form}/>
         {projectFormFields.map((formField: ProjectFormField) => {
           return (
             <FormField
