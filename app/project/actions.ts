@@ -5,7 +5,7 @@ import { Project } from "./components/columns"
 import { GOAPI_URL } from "@/lib/url";
 import { ResponseMessage } from "@/types/custom-types";
 import { dateFormatter } from "@/lib/utils";
-import { MIME_TYPE_FOLDER, ROOT_DRIVE_FOLDER_ID } from "@/lib/req"
+import { MIME_TYPE_FOLDER } from "@/lib/req"
 import { GOOGLE_DRIVE_API_URL } from "@/lib/url"
 import { getAuthHeaderBearer } from "@/lib/auth-utils";
 
@@ -177,8 +177,8 @@ export async function createFolder({ projectName, parentFolderId }: { projectNam
 		console.log(res)
 
 		const file = await res.json()
-
-		return JSON.stringify(file.id) // Folder ID
+		
+		return  file.id// Folder ID
 
 	} catch (e: any) {
 
