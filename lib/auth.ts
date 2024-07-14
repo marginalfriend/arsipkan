@@ -18,7 +18,7 @@ export const authOptions: AuthOptions = {
 			}
 		})
 	],
-
+	secret: process.env.NEXTAUTH_SECRET,
 	callbacks: {
 		async jwt({ token, account, profile }) {
 			// Persist the OAuth access_token and or the user id to the token right after signin
