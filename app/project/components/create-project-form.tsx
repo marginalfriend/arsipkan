@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 const FormSchema = z.object({
   company: z.string(),
   spkNumber: z.string(),
-  clientName: z.string(),
+  // clientName: z.string(),
   projectName: z.string(),
   value: z.string(),
   city: z.string(),
@@ -33,7 +33,7 @@ const FormSchema = z.object({
 });
 
 type ProjectFormField = {
-  name: "spkNumber" | "clientName" | "projectName" | "value";
+  name: "spkNumber"  | "projectName" | "value" // | "clientName";
   type: string;
   label: string;
   placeHolder: string;
@@ -47,7 +47,7 @@ export function CreateProjectForm() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       spkNumber: "",
-      clientName: "",
+      // clientName: "",
       projectName: "",
       value: "",
       date: new Date(),
@@ -83,13 +83,13 @@ export function CreateProjectForm() {
       placeHolder: "Pemasangan Panel Surya",
       description: "Tulis nama projek sesuai dengan SPK",
     },
-    {
-      name: "clientName",
-      type: "text",
-      label: "Nama Client",
-      placeHolder: "PT. JAYA ABADI",
-      description: "Nama perseroan client",
-    },
+    // {
+    //   name: "clientName",
+    //   type: "text",
+    //   label: "Nama Client",
+    //   placeHolder: "PT. JAYA ABADI",
+    //   description: "Nama perseroan client",
+    // },
     {
       name: "value",
       type: "text",

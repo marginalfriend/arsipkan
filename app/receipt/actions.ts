@@ -128,10 +128,10 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				{
 					replaceAllText:
 					{
-						replaceText: receiptNumber, // New text to insert
+						replaceText: receiptNumber,
 						containsText: {
-							text: "{{receiptNumber}}", // Text to edit
-							matchCase: true, // Case sensitive?
+							text: "{{receiptNumber}}",
+							matchCase: true,
 						}
 					}
 				},
@@ -209,7 +209,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				},
 				{
 					replaceAllText: {
-						replaceText: city, // TODO: Format city
+						replaceText: city,
 						containsText: {
 							text: "{{city}}",
 							matchCase: true,
@@ -218,7 +218,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				},
 				{
 					replaceAllText: {
-						replaceText: billDate, // TODO: Format city
+						replaceText: billDate,
 						containsText: {
 							text: "{{date}}",
 							matchCase: true,
@@ -227,7 +227,7 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				},
 				{
 					replaceAllText: {
-						replaceText: data.receiver, // TODO: Format city
+						replaceText: data.receiver,
 						containsText: {
 							text: "{{receiver}}",
 							matchCase: true,
@@ -321,4 +321,126 @@ export async function getReceipts() {
 
 export async function getSPKs() {
 	return await prisma.sPK.findMany()
+}
+
+type BillingFields = {
+	clientName: string;
+	date: string;
+	receiptNumber: string;
+	projectName: string;
+	city?: string;
+	paymentFor: string;
+	spkNumber: string;
+	realCost: string | number;
+	vat: string | number;
+	totalCost: string | number;
+	spelledOut?: string;
+	receiver?: string;
+}
+
+async function createInvoice(fields: BillingFields) {
+	const requests = {
+		requests: [
+			{
+				replaceAllText:
+				{
+					replaceText: fields.receiptNumber,
+					containsText: {
+						text: "{{receiptNumber}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.clientName,
+					containsText: {
+						text: "{{clientName}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.receiptNumber,
+					containsText: {
+						text: "{{receiptNumber}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.paymentFor,
+					containsText: {
+						text: "{{paymentFor}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.spkNumber,
+					containsText: {
+						text: "{{spkNumber}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.realCost,
+					containsText: {
+						text: "{{realCost}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.vat,
+					containsText: {
+						text: "{{vat}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.totalCost,
+					containsText: {
+						text: "{{totalCost}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.city,
+					containsText: {
+						text: "{{city}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.date,
+					containsText: {
+						text: "{{date}}",
+						matchCase: true,
+					}
+				}
+			},
+			{
+				replaceAllText: {
+					replaceText: fields.receiver,
+					containsText: {
+						text: "{{receiver}}",
+						matchCase: true,
+					}
+				}
+			},
+		]
+	}
 }
