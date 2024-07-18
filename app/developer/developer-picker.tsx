@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   FormControl,
@@ -25,16 +25,18 @@ export function DeveloperPicker(form: any) {
   };
 
   const [developers, setDevelopers] = useState<Developer[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-	// TO DO: Fix fetch developers
-	const fetchDevelopers = () => {
-		console.log("Called")
-		getDeveloper().then((data) => setDevelopers(data))
-	}
+  // TO DO: Fix fetch developers
+  const fetchDevelopers = () => {
+    setIsLoading(true);
+    getDeveloper().then((data) => setDevelopers(data));
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    getDeveloper().then((data) => setDevelopers(data));
-  }, []);
+    fetchDevelopers();
+  }, [isLoading]);
 
   return (
     <FormField

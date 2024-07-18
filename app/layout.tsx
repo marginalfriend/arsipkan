@@ -12,7 +12,7 @@ const plus_jakarta_sans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-	title: "Arsipkan",
+	title: "Surya Karya Mandiri",
 	description: "Pengarsipan. Ter-automasi.",
 };
 

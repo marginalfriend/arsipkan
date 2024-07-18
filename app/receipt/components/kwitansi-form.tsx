@@ -81,13 +81,6 @@ export function KwitansiForm() {
   };
 
   const kwitansiFormFields: KwitansiFormField[] = [
-    // {
-    //   name: "billSequence",
-    //   type: "text",
-    //   label: "Urutan Tagihan",
-    //   placeHolder: "1",
-    //   description: "Urutan tagihan berdasarkan projek",
-    // },
     {
       name: "receiptSequence",
       type: "text",

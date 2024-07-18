@@ -129,7 +129,7 @@ export function CreateProjectForm() {
             />
           );
         })}
-        <CityPicker form={form} />
+        {/* <CityPicker form={form} /> */}
         <DatePicker form={form} />
         <Button type="submit">Submit</Button>
       </form>

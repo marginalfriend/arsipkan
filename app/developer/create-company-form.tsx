@@ -67,7 +67,7 @@ export function CreateCompanyForm() {
             <FormItem>
               <FormLabel>Nama Perusahaan / PT.</FormLabel>
               <FormControl>
-                <Input placeholder="Sinar Mas" {...field} />
+                <Input placeholder="PT. Mekaelsa" {...field} />
               </FormControl>
               <FormDescription>Tulis nama perusahaan / PT.</FormDescription>
               <FormMessage />
