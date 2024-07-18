@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatIDR } from "@/lib/utils";
 
 export type Project = {
   spkNumber: string;
@@ -29,16 +30,8 @@ export const columns: ColumnDef<Project>[] = [
     header: "Nomor SPK",
   },
   {
-    accessorKey: "clientName",
-    header: "Nama Klien",
-  },
-  {
     accessorKey: "projectName",
     header: "Nama Projek",
-  },
-  {
-    accessorKey: "city",
-    header: "Kota Projek",
   },
   {
     accessorKey: "date",
@@ -47,10 +40,20 @@ export const columns: ColumnDef<Project>[] = [
   {
     accessorKey: "value",
     header: "Nilai Projek",
+    cell: ({ row }) => {
+      const project = row.original;
+
+      return formatIDR(project.value);
+    },
   },
   {
     accessorKey: "remaining",
     header: "Yang Belum Dibayar",
+    cell: ({ row }) => {
+      const project = row.original;
+
+      return formatIDR(project.remaining);
+    },
   },
   {
     id: "actions",

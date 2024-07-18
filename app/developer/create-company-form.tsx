@@ -29,7 +29,7 @@ const FormSchema = z.object({
 });
 
 export function CreateCompanyForm() {
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
