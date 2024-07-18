@@ -17,6 +17,7 @@ import { z } from "zod";
 import { createCompany } from "./actions";
 import { DeveloperPicker } from "./developer-picker";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const FormSchema = z.object({
   developer: z.string({
@@ -28,6 +29,7 @@ const FormSchema = z.object({
 });
 
 export function CreateCompanyForm() {
+  const [isLoading, setIsloading] = useState(true);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,6 +41,7 @@ export function CreateCompanyForm() {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     const devObject = JSON.parse(data.developer);
+    setIsloading(true);
 
     createCompany({ name: data.name, developerId: devObject.id })
       .then((result) => {
@@ -48,6 +51,8 @@ export function CreateCompanyForm() {
         });
       })
       .then(router.refresh);
+
+    setIsloading(false);
 
     form.reset();
   };
@@ -74,7 +79,9 @@ export function CreateCompanyForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { DatePicker } from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,12 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createFolder, createProject } from "../actions";
-import { DatePicker } from "@/components/date-picker";
-import { toast, useToast } from "@/components/ui/use-toast";
-import { CityPicker } from "./city-picker";
-import CompanyPicker from "./company-picker";
+import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { createProject } from "../actions";
+import CompanyPicker from "./company-picker";
+import { useState } from "react";
 
 const FormSchema = z.object({
   company: z.string(),
@@ -33,7 +33,7 @@ const FormSchema = z.object({
 });
 
 type ProjectFormField = {
-  name: "spkNumber"  | "projectName" | "value" // | "clientName";
+  name: "spkNumber" | "projectName" | "value"; // | "clientName";
   type: string;
   label: string;
   placeHolder: string;
@@ -42,6 +42,7 @@ type ProjectFormField = {
 
 export function CreateProjectForm() {
   const router = useRouter();
+  const [isLoading, setIsloading] = useState(true);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -131,7 +132,9 @@ export function CreateProjectForm() {
         })}
         {/* <CityPicker form={form} /> */}
         <DatePicker form={form} />
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );
