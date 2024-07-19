@@ -5,38 +5,39 @@ import { cn } from "@/lib/utils";
 import { Provider } from "./provider";
 import { Header } from "@/components/header";
 import { Toaster } from "@/components/ui/toaster";
+import SideBar from "@/components/sidebar";
 
 const plus_jakarta_sans = Plus_Jakarta_Sans({
-	subsets: ["latin"],
-	variable: "--font-sans",
+  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-	title: "Surya Karya Mandiri",
-	description: "Pengarsipan. Ter-automasi.",
+  title: "Surya Karya Mandiri",
+  description: "Pengarsipan. Ter-automasi.",
 };
 
 export default function RootLayout({
-	children,
-	}: Readonly<{
-	children: React.ReactNode;
-	}>) {
-	return (
-		<html lang="en">
-			<body
-				className={cn(
-					"min-h-screen bg-background font-sans antialiased",
-					plus_jakarta_sans.variable
-				)}
-			>
-				<Provider>
-				<>
-					<Header />
-					{children}
-					<Toaster />
-				</>
-				</Provider>
-			</body>
-		</html>
-	);
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          plus_jakarta_sans.variable
+        )}
+      >
+        <Provider>
+          <div className="flex">
+            <SideBar />
+            <main className="p-2 w-full">{children}</main>
+          </div>
+          <Toaster />
+        </Provider>
+      </body>
+    </html>
+  );
 }

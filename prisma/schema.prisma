@@ -29,10 +29,9 @@ model Company {
   SPK          SPK[]
 }
 
-model City {
-  id   String @id
+model WorkType {
+  id   String @id @default(uuid())
   name String
-  SPK  SPK[]
 }
 
 model SPK {
@@ -44,8 +43,6 @@ model SPK {
   value        Int
   date         DateTime
   folder_id    String
-  city_id      String
-  city         City     @relation(fields: [city_id], references: [id])
   Bill         Bill[]
 }
 
@@ -83,7 +80,6 @@ model Invoice {
   bill    Bill   @relation(fields: [bill_id], references: [id])
 }
 
-// Berita acara
 model Minutes {
   id      String @id @default(uuid())
   doc_id  String
