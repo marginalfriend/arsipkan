@@ -73,11 +73,11 @@ export const columns: ColumnDef<Project>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(project.spkNumber)}
             >
-              Copy payment ID
+              Buat Tagihan
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Lihat Progres</DropdownMenuItem>
+            <DropdownMenuItem>Google Drive Folder</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

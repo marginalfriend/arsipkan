@@ -11,7 +11,7 @@ export default function SideBar() {
       </h1>
       <nav>
         <ul className="flex flex-col gap-2 px-2">
-          <li>
+          {/* <li>
             <Link href="/developer">
               <Button
                 variant="ghost"
@@ -21,7 +21,7 @@ export default function SideBar() {
                 <p>Developers</p>
               </Button>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/project">
               <Button

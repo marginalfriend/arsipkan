@@ -49,14 +49,6 @@ export async function getProjects() {
 }
 
 export async function createProject(req: any) {
-	var response: ResponseMessage = {
-		message: "",
-		description: "",
-		toastVariant: "default"
-	}
-
-	console.log(req)
-
 	const companyObject = JSON.parse(req.company)
 
 	try {
@@ -107,21 +99,9 @@ export async function createProject(req: any) {
 			}
 		})
 
-
-		response.message = "Berhasil membuat projek baru"
-		response.description = "Projek baru dari " + req.clientName + " untuk " + req.projectName
-		response.toastVariant = "default"
-
-	} catch (e) {
-		console.error(e)
-
-		response.message = "Gagal membuat projek baru"
-		response.description = "Ada kesalahan dalam pembuatan projek baru"
-		response.toastVariant = "destructive"
-
+	} catch (e: any) {
+		throw new Error(e.message)
 	}
-
-	return response
 }
 
 export async function getProvinces() {
@@ -177,8 +157,8 @@ export async function createFolder({ projectName, parentFolderId }: { projectNam
 		console.log(res)
 
 		const file = await res.json()
-		
-		return  file.id// Folder ID
+
+		return file.id// Folder ID
 
 	} catch (e: any) {
 

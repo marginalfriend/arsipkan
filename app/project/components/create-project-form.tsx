@@ -25,7 +25,6 @@ import { useState } from "react";
 const FormSchema = z.object({
   company: z.string(),
   spkNumber: z.string(),
-  // clientName: z.string(),
   projectName: z.string(),
   value: z.string(),
   city: z.string(),
@@ -48,7 +47,6 @@ export function CreateProjectForm() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       spkNumber: "",
-      // clientName: "",
       projectName: "",
       value: "",
       date: new Date(),
@@ -56,16 +54,26 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    createProject(data)
-      .then((result) => {
-        toast({
-          variant: result.toastVariant,
-          title: result.message,
-          description: result.description,
-        });
-      })
-      .then(router.refresh);
-
+    setIsloading(true);
+    try {
+      createProject(data)
+        .then((result) => {
+          toast({
+            variant: "default",
+            title: "Berhasil",
+            description: "Berhasil membuat projek.",
+          });
+        })
+        .then(router.refresh);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    } finally {
+      setIsloading(false);
+    }
     form.reset();
   };
 
@@ -84,13 +92,6 @@ export function CreateProjectForm() {
       placeHolder: "Pemasangan Panel Surya",
       description: "Tulis nama projek sesuai dengan SPK",
     },
-    // {
-    //   name: "clientName",
-    //   type: "text",
-    //   label: "Nama Client",
-    //   placeHolder: "PT. JAYA ABADI",
-    //   description: "Nama perseroan client",
-    // },
     {
       name: "value",
       type: "text",
@@ -130,7 +131,6 @@ export function CreateProjectForm() {
             />
           );
         })}
-        {/* <CityPicker form={form} /> */}
         <DatePicker form={form} />
         <Button disabled={isLoading} type="submit">
           Submit

@@ -1,11 +1,12 @@
-import { CreateCompanyForm } from "./components/create-company-form";
-import { CreateDeveloperForm } from "./components/create-developer-form";
+import { CreateDeveloperDialog } from "./components/create-developer-dialog";
 
 export default function Page() {
   return (
-    <main className="grid grid-cols-2 items-center justify-center gap-2 m-0 mb-24 max-w-[100vw]">
-      <CreateDeveloperForm />
-      <CreateCompanyForm />
-    </main>
+    <div className="flex flex-col items-center justify-center gap-4 m-0 mb-24">
+      <div className="flex w-full justify-between">
+        <h1 className="text-3xl font-bold">Developer</h1>
+        <CreateDeveloperDialog />
+      </div>
+    </div>
   );
 }
