@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { getDeveloper } from "./actions";
+import { getDeveloper } from "../actions";
 
 export function DeveloperPicker(form: any) {
   type Developer = {
