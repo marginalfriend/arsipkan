@@ -1,9 +1,4 @@
-import { DataTable } from "@/components/ui/data-table";
-import { Project, columns } from "./components/columns";
-import { getProjects } from "./actions";
 import ProjectTable from "./components/project-table";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { CreateProjectDialog } from "./components/create-project-dialog";
 
 export default function Page() {
@@ -17,5 +12,3 @@ export default function Page() {
     </div>
   );
 }
-
-// main className="max-w-[100vw]"
