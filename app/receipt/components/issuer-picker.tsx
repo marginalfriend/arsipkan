@@ -14,16 +14,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { getCompanies } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
-export default function CompanyPicker(form: any) {
+export default function IssuerPicker(form: any) {
   type Company = {
     id: string;
     name: string;
   };
 
   const [companies, setCompanies] = useState<Company[]>([]);
+
+  useEffect(() => {
+    getCompanies().then((data) => setCompanies(data));
+  }, []);
+
   return (
     <FormField
       control={form.control}
@@ -45,11 +51,11 @@ export default function CompanyPicker(form: any) {
                 <Plus className="w-4 h-4 mr-2" />
                 <span>Perusahaan Baru</span>
               </Button>
-							<hr/>
+              <hr />
               {companies?.map((company) => {
                 return (
                   <SelectItem
-									className="hover:bg-accent"
+                    className="hover:bg-accent"
                     key={company.id}
                     value={JSON.stringify({
                       id: company.id,

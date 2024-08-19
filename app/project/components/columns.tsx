@@ -13,16 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { formatIDR } from "@/lib/utils";
+import { Project } from "@prisma/client";
 
-export type Project = {
-  spkNumber: string;
-  clientName: string;
-  projectName: string;
-  date: string;
-  city: string;
-  value: number;
-  remaining: number;
-};
 
 export const columns: ColumnDef<Project>[] = [
   {

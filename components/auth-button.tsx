@@ -1,23 +1,24 @@
-'use client'
+"use client";
 
-import { useSession, signIn, signOut } from "next-auth/react"
-import { Button } from "@/components/ui/button"
-export default function AuthButton() {
-	const { data: session } = useSession()
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Button, ButtonProps } from "@/components/ui/button";
 
-    if (session) {
-		if (session.user) {
-			return (
-				<div className="flex flex-row justify-start align-middle gap-6">
-					<Button onClick={() => signOut()}>Sign out</Button>
-				</div>
-			)
-		}
-	} else {
-		return (
-			<div className="flex flex-row justify-start align-middle gap-6">
-				<Button onClick={() => signIn()}>Sign in</Button>
-			</div>
-		)
-	}
+export default function AuthButton({ ...props }: ButtonProps) {
+  const { data: session } = useSession();
+
+  if (session) {
+    if (session.user) {
+      return (
+        <Button variant="destructive" {...props} onClick={() => signOut()}>
+          Sign out
+        </Button>
+      );
+    }
+  } else {
+    return (
+      <Button {...props} onClick={() => signIn()}>
+        Sign in
+      </Button>
+    );
+  }
 }

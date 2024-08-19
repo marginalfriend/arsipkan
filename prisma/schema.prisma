@@ -26,7 +26,7 @@ model Company {
   folder_id    String
   developer_id String
   developer    Developer @relation(fields: [developer_id], references: [id])
-  SPK          SPK[]
+  Project      Project[]
 }
 
 model WorkType {
@@ -34,29 +34,64 @@ model WorkType {
   name String
 }
 
+model Project {
+  id             String          @id @default(uuid())
+  project_name   String
+  value          Int
+  date           DateTime
+  folder_id      String
+  Bill           Bill[]	
+  BudgetProposal BudgetProposal?
+  ShopDrawing    ShopDrawing?
+  company_id     String
+  company        Company         @relation(fields: [company_id], references: [id])
+  SPK            SPK?
+}
+
+model BudgetProposal {
+  id              String   @id @default(uuid())
+  project_id      String   @unique
+  project         Project  @relation(fields: [project_id], references: [id])
+  proposal_number String
+  value           Int
+  date            DateTime
+  doc_id          String
+}
+
+model ShopDrawing {
+  id         String  @id @default(uuid())
+  project_id String  @unique
+  project    Project @relation(fields: [project_id], references: [id])
+  doc_id     String
+}
+
 model SPK {
-  id           String   @id @default(uuid())
-  number       String   @unique
-  company_id   String
-  company      Company  @relation(fields: [company_id], references: [id])
-  project_name String
-  value        Int
-  date         DateTime
-  folder_id    String
-  Bill         Bill[]
+  id         String   @id @default(uuid())
+  project_id String   @unique
+  project    Project  @relation(fields: [project_id], references: [id])
+  spk_number String   @unique
+  date       DateTime
+  doc_id     String
+}
+
+model Employee {
+  id   Int    @id @default(autoincrement())
+  name String
+  Bill Bill[]
 }
 
 model Bill {
   id               String           @id @default(uuid())
   bill_sequence    Int              @default(autoincrement())
   receipt_sequence Int              @default(autoincrement())
-  issuer           String
+  issuer_id        Int
+  issuer           Employee         @relation(fields: [issuer_id], references: [id])
   date             DateTime         @default(now())
   amount           Int
   vat              Int
   receiver         String
-  spk_id           String
-  spk              SPK              @relation(fields: [spk_id], references: [id])
+  project_id       String
+  project          Project          @relation(fields: [project_id], references: [id])
   SignedInvoice    SignedInvoice[]
   SignedReceipt    SignedReceipt[]
   Receipt          Receipt[]

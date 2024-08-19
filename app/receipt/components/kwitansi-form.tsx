@@ -22,7 +22,6 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  // billSequence: z.string(),
   receiptSequence: z.string(),
   amount: z.string(),
   paymentFor: z.string(),
@@ -36,7 +35,6 @@ const FormSchema = z.object({
 export type KwitansiSchema = z.infer<typeof FormSchema>
 
 type NameField =
-  // | "billSequence"
   | "receiptSequence"
   | "paymentFor"
   | "amount"
@@ -57,7 +55,6 @@ export function KwitansiForm() {
   const form = useForm<KwitansiSchema>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      // billSequence: "",
       receiptSequence: "",
       amount: "",
       vat: "",

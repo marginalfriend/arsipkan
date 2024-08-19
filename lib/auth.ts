@@ -5,38 +5,25 @@ import Google from "next-auth/providers/google"
 export const authOptions: AuthOptions = {
 	providers: [
 		Google({
-			clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 			authorization: {
-				url: "https://accounts.google.com/o/oauth2/v2/auth",
 				params: {
 					scope: process.env.SCOPES,
 				}
 			},
-			token: {
-				url: "https://oauth2.googleapis.com/token",
-			}
 		})
 	],
 
 	callbacks: {
-		async jwt({ token, account, profile }) {
-			// Persist the OAuth access_token and or the user id to the token right after signin
-			if (account) {
+		async session({ session, token }) {
 
-				token.accessToken = account.access_token
-				token.id = account.id
-
-			}
-
-			return token
-		},
-
-
-		async session({ session, token, user }) {
-			// Send properties to the client, like an access_token and user id from a provider.
 			session.accessToken = token.accessToken
-			session.user.id = token.id
+			session.user.id = token.sub
+			session.user.email = token.email
+			session.user.name = token.name
+			session.user.image = token.picture
+			session.expires = token.exp as string
 
 			return session
 		}

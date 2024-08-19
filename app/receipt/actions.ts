@@ -22,16 +22,11 @@ export async function createNewReceipt(data: KwitansiSchema) {
 
 		// 1. Check billing sequence from drive folder
 
-		const project = await prisma.sPK.findFirst({
+		const project = await prisma.project.findFirst({
 			select: {
 				number: true,
 				folder_id: true,
 				company: true,
-				city: {
-					select: {
-						name: true
-					}
-				}
 			},
 			where: {
 				id: data.spk
@@ -114,7 +109,6 @@ export async function createNewReceipt(data: KwitansiSchema) {
 		const totalCost = formatIDR(parseInt(data.amount) + parseInt(data.vat))
 		const vat = formatIDR(parseInt(data.vat))
 		const amount = formatIDR(parseInt(data.amount))
-		const city = cityFormatter(project.city.name)
 		const clientCo = createAbbreviation(project.company.name)
 		const romanMonth = monthToRoman(data.date)
 		const year = data.date.getFullYear()
@@ -209,15 +203,6 @@ export async function createNewReceipt(data: KwitansiSchema) {
 				},
 				{
 					replaceAllText: {
-						replaceText: city,
-						containsText: {
-							text: "{{city}}",
-							matchCase: true,
-						}
-					}
-				},
-				{
-					replaceAllText: {
 						replaceText: billDate,
 						containsText: {
 							text: "{{date}}",
@@ -293,7 +278,7 @@ export async function getReceipts() {
 	try {
 		(await prisma.bill.findMany({
 			include: {
-				spk: {
+				project: {
 					select: {
 						project_name: true
 					}
@@ -309,7 +294,7 @@ export async function getReceipts() {
 				amount: data.amount,
 				vat: data.vat,
 				receiver: data.receiver,
-				spk_id: data.spk.project_name
+				project_id: data.project.project_name
 			})
 		});
 	} catch (e) {
@@ -319,8 +304,8 @@ export async function getReceipts() {
 	return result
 }
 
-export async function getSPKs() {
-	return await prisma.sPK.findMany()
+export async function getProject() {
+	return await prisma.project.findMany()
 }
 
 type BillingFields = {

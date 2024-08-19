@@ -18,9 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { createProject } from "../actions";
 import CompanyPicker from "./company-picker";
 import { useState } from "react";
+import { DeveloperPicker } from "@/app/developer/components/developer-picker";
 
 const FormSchema = z.object({
   company: z.string(),
@@ -56,15 +56,15 @@ export function CreateProjectForm() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setIsloading(true);
     try {
-      createProject(data)
-        .then((result) => {
-          toast({
-            variant: "default",
-            title: "Berhasil",
-            description: "Berhasil membuat projek.",
-          });
-        })
-        .then(router.refresh);
+      // createProject(data)
+      //   .then((result) => {
+      //     toast({
+      //       variant: "default",
+      //       title: "Berhasil",
+      //       description: "Berhasil membuat projek.",
+      //     });
+      //   })
+      //   .then(router.refresh);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -107,6 +107,7 @@ export function CreateProjectForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-6 p-4 m-0"
       >
+				<DeveloperPicker form={form}/>
         <CompanyPicker form={form} />
         {projectFormFields.map((formField: ProjectFormField) => {
           return (
