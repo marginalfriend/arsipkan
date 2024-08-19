@@ -26,15 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen min-w-screen overflow-x-hidden bg-background font-sans antialiased",
           plus_jakarta_sans.variable
         )}
       >
         <Provider>
-          <div className="flex">
-            <SideBar />
-            <main className="p-2 w-full">{children}</main>
-          </div>
+          <div>{children}</div>
           <Toaster />
         </Provider>
       </body>

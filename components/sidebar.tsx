@@ -7,26 +7,29 @@ import Link from "next/link";
 import AuthButton from "./auth-button";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function SideBar() {
   const { data: session } = useSession();
+	const pathname = usePathname()
+	const isActive = (path: string) => path === pathname
 
 	const sideBarItems = [
-		{
-			href: "/developer",
-			label: "Developers",
-			icon: <Building2 />
-		},
+		// {
+		// 	href: "/developer",
+		// 	label: "Developers",
+		// 	icon: <Building2 />
+		// },
     {
       href: "/project",
       label: "Projects",
 			icon: <Building />
     },
-    {
-      href: "/receipt",
-      label: "Receipts",
-			icon: <Receipt />
-    },
+    // {
+    //   href: "/receipt",
+    //   label: "Receipts",
+		// 	icon: <Receipt />
+    // },
   ];
 
   return (
@@ -40,7 +43,7 @@ export default function SideBar() {
             <li key={item.href}>
               <Link href={item.href}>
                 <Button
-                  variant="ghost"
+                  variant={isActive(item.href) ? "default" :"ghost"}
                   className="w-full justify-start font-semibold gap-2"
                 >
                   {item.icon}
