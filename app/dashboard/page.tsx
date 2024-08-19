@@ -1,8 +1,11 @@
 import React from 'react'
+import ProjectTable from './components/ProjectTable'
 
 function DashboardHomePage() {
 	return (
-		<div>DashboardHomePage</div>
+		<main className='flex flex-col p-4'>
+			<ProjectTable />
+		</main>
 	)
 }
 
