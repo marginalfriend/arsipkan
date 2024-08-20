@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { columns, companies, developers, projectData } from "./columns";
 import { capitalizeWords, formatIDR } from "@/lib/utils";
 import {
@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter, Plus } from "lucide-react";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ColumnFilter } from "@tanstack/react-table";
 
@@ -39,31 +38,28 @@ function ProjectTable() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-end gap-2">
-        <div className="flex flex-col justify-end gap-2">
-          <Label>Cari berdasarkan:</Label>
-          <div className="flex gap-2">
-            <DeveloperFilter
-              handleFilterChange={handleFilterChange}
-              developers={developers}
-              filter={filter}
-            />
-            <CompanyFilter
-              filter={filter}
-              handleFilterChange={handleFilterChange}
-              companies={companies}
-            />
-          </div>
+      <div className="flex flex-col-reverse lg:flex-row justify-between items-end gap-2">
+        <div className="flex gap-2">
+          <DeveloperFilter
+            handleFilterChange={handleFilterChange}
+            developers={developers}
+            filter={filter}
+          />
+          <CompanyFilter
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            companies={companies}
+          />
         </div>
-        {/* <Button className="flex gap-2">
+        <Button className="flex gap-2 w-full lg:w-fit">
           <Plus className="w-4 h-4" /> Projek Baru
-        </Button> */}
-        <div className="flex gap-2 w-full">
-          <div className="flex flex-col px-4 py-4 border rounded w-full">
+        </Button>
+        <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-fit lg:justify-end">
+          <div className="flex flex-col px-4 py-4 border rounded w-full lg:w-fit">
             <h1 className="font-bold text-xl">Total Nilai</h1>
             <h1>{formatIDR(totalValue)}</h1>
           </div>
-          <div className="flex flex-col px-4 py-4 border rounded w-full">
+          <div className="flex flex-col px-4 py-4 border rounded w-full lg:w-fit">
             <h1 className="font-bold text-xl">Total Piutang</h1>
             <h1>{formatIDR(totalReceivable)}</h1>
           </div>

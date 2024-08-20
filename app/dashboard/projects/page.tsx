@@ -3,7 +3,7 @@ import ProjectTable from './components/project-table'
 
 function DashboardHomePage() {
 	return (
-		<main className='flex flex-col px-8 py-6'>
+		<main className='flex flex-col px-8 py-6 gap-4'>
 			<h1 className='font-bold text-3xl'>Tabel Projek</h1>
 			<ProjectTable />
 		</main>
