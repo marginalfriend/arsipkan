@@ -39,7 +39,7 @@ function ProjectTable() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-end">
+      <div className="flex justify-between items-end gap-2">
         <div className="flex flex-col justify-end gap-2">
           <Label>Cari berdasarkan:</Label>
           <div className="flex gap-2">
@@ -55,15 +55,15 @@ function ProjectTable() {
             />
           </div>
         </div>
-        <Button className="flex gap-2">
+        {/* <Button className="flex gap-2">
           <Plus className="w-4 h-4" /> Projek Baru
-        </Button>
-        <div className="flex justify-end gap-2">
-          <div className="flex flex-col px-4 py-4 border rounded w-fit">
+        </Button> */}
+        <div className="flex gap-2 w-full">
+          <div className="flex flex-col px-4 py-4 border rounded w-full">
             <h1 className="font-bold text-xl">Total Nilai</h1>
             <h1>{formatIDR(totalValue)}</h1>
           </div>
-          <div className="flex flex-col px-4 py-4 border rounded w-fit">
+          <div className="flex flex-col px-4 py-4 border rounded w-full">
             <h1 className="font-bold text-xl">Total Piutang</h1>
             <h1>{formatIDR(totalReceivable)}</h1>
           </div>
