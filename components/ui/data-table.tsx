@@ -2,9 +2,11 @@
 
 import {
   ColumnDef,
+  ColumnFilter,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -18,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { ArrowUpDown } from "lucide-react";
 
@@ -30,7 +32,8 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+  filter,
+}: DataTableProps<TData, TValue> & { filter: ColumnFilter }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -38,15 +41,21 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     state: {
-			sorting,
+      sorting,
       columnFilters,
     },
-		filterFns: {},
-		onSortingChange: setSorting,
-		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		onColumnFiltersChange: setColumnFilters,
+    filterFns: {},
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
   });
+
+  useEffect(() => {
+    setColumnFilters([filter]);
+		console.log(filter)
+  }, [filter]);
 
   return (
     <div className="rounded-md border w-full over overflow-x-scroll">

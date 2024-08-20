@@ -24,22 +24,22 @@ export type ProjectColumns = {
 const columnHelper = createColumnHelper<ProjectColumns>();
 
 export const columns = [
-  columnHelper.accessor("name", {
-    id: "name",
-    header: ({ column }) => <SortingButton column={column} label={"Name"} />,
-  }),
-  columnHelper.accessor("developer", {
-    id: "developer",
+	columnHelper.accessor("developer", {
+		id: "developer",
     header: ({ column }) => (
-      <SortingButton column={column} label={"Developer"} />
+			<SortingButton column={column} label={"Developer"} />
     ),
   }),
   columnHelper.accessor("company", {
-    id: "company",
+		id: "company",
     header: ({ column }) => (
-      <SortingButton column={column} label={"Perusahaan / PT"} />
+			<SortingButton column={column} label={"Perusahaan / PT"} />
     ),
   }),
+	columnHelper.accessor("name", {
+		id: "name",
+		header: ({ column }) => <SortingButton column={column} label={"Nama Projek"} />,
+	}),
   columnHelper.accessor("date", {
     id: "date",
     header: ({ column }) => (
