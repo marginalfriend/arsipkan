@@ -111,6 +111,23 @@ export const projectData: ProjectColumns[] = [
   },
 ];
 
+export const developers: string[] = [
+  "Indo Property Group",
+  "Nusantara Development",
+  "Mega Property Holdings",
+  "Urban Builders",
+  "Harmony Development",
+];
+
+export const companies: string[] = [
+  "PT Sinar Jaya Abadi",
+  "PT Cahaya Nusantara",
+  "PT Surya Agung",
+  "PT Gemilang Konstruksi",
+  "PT Sejahtera Mandiri",
+];
+
+
 function SortingButton({ column, label }: { column: any; label: string }) {
   return (
     <Button
