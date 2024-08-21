@@ -11,12 +11,14 @@ import {
 import { dateFormatter, formatIDR } from "@/lib/utils";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export type ProjectColumns = {
   id: string;
-	name: string;
-  developer: string;
-  company: string;
+  name: string;
+  developer: Developer;
+  company: Company;
   date: Date;
   value: number;
   receivable: number;
@@ -25,22 +27,26 @@ export type ProjectColumns = {
 const columnHelper = createColumnHelper<ProjectColumns>();
 
 export const columns = [
-	columnHelper.accessor("developer", {
-		id: "developer",
+  columnHelper.accessor("developer", {
+    id: "developer",
     header: ({ column }) => (
-			<SortingButton column={column} label={"Developer"} />
+      <SortingButton column={column} label={"Developer"} />
     ),
+    cell: ({ row }) => row.original.developer.name,
   }),
   columnHelper.accessor("company", {
-		id: "company",
+    id: "company",
     header: ({ column }) => (
-			<SortingButton column={column} label={"Perusahaan / PT"} />
+      <SortingButton column={column} label={"Perusahaan / PT"} />
+    ),
+    cell: ({ row }) => row.original.company.name,
+  }),
+  columnHelper.accessor("name", {
+    id: "name",
+    header: ({ column }) => (
+      <SortingButton column={column} label={"Nama Projek"} />
     ),
   }),
-	columnHelper.accessor("name", {
-		id: "name",
-		header: ({ column }) => <SortingButton column={column} label={"Nama Projek"} />,
-	}),
   columnHelper.accessor("date", {
     id: "date",
     header: ({ column }) => (
@@ -63,17 +69,17 @@ export const columns = [
     cell: (info) => formatIDR(info.getValue()),
   }),
   columnHelper.display({
-		id: "actions",
-		header: "Actions",
-    cell: (props) => <ActionsButton />,
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => <ActionsButton projectId={row.original.id} />,
   }),
 ];
 
 export type ProjectTable = {
   id: string; // Unique ID for the project
   name: string; // Project name
-  developer: string; // Real estate developer (UUID)
-  company: string; // PT (Perseroan Terbatas) working on this project (UUID)
+  developer: Developer;
+  company: Company;
   date: Date; // Agreement date
   value: number; // Value of the project
   receivable: number; // Unpaid value
@@ -89,7 +95,6 @@ export type Company = {
   name: string;
 };
 
-
 function SortingButton({ column, label }: { column: any; label: string }) {
   return (
     <Button
@@ -102,7 +107,9 @@ function SortingButton({ column, label }: { column: any; label: string }) {
   );
 }
 
-function ActionsButton() {
+function ActionsButton({ projectId }: { projectId: string }) {
+  const path = usePathname();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -110,17 +117,13 @@ function ActionsButton() {
           <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
-			<DropdownMenuContent align="end">
-				<DropdownMenuLabel>
-					Actions
-				</DropdownMenuLabel>
-				<DropdownMenuItem>
-					Lihat Detail
-				</DropdownMenuItem>
-				<DropdownMenuItem>
-					Buat Kwitansi & Invoice	
-				</DropdownMenuItem>
-			</DropdownMenuContent>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem>
+          <Link href={`${path}/${projectId}`}>Lihat Detail</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>Buat Kwitansi & Invoice</DropdownMenuItem>
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 }

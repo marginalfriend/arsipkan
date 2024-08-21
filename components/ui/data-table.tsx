@@ -54,7 +54,6 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     setColumnFilters([filter]);
-		console.log(filter)
   }, [filter]);
 
   return (
