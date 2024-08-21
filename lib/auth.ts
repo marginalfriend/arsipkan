@@ -1,8 +1,12 @@
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
 import NextAuth, { AuthOptions, NextAuthOptions, getServerSession } from "next-auth"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import Google from "next-auth/providers/google"
+import prisma from "./db"
+import { Adapter } from "next-auth/adapters"
 
 export const authOptions: AuthOptions = {
+	adapter: PrismaAdapter(prisma) as Adapter,
 	providers: [
 		Google({
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -28,7 +32,7 @@ export const authOptions: AuthOptions = {
 			return session
 		}
 	}
-} satisfies NextAuthOptions
+}
 
 export const { handlers, signIn, signOut } = NextAuth(authOptions);
 

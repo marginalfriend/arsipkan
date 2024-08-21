@@ -1,3 +1,4 @@
+import AuthButton from "@/components/auth-button";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -7,8 +8,10 @@ export default function Home() {
         <h1 className="text-6xl text-center font-black">
           Surya Karya Mandiri <br /> Central Archive
         </h1>
-        <h1 className="text-xl">Pusat pengarsipan data transaksi projek Surya Karya Mandiri</h1>
-        <Button>Masuk</Button>
+        <h1 className="text-xl">
+          Pusat pengarsipan data transaksi projek Surya Karya Mandiri
+        </h1>
+        <AuthButton />
       </div>
     </main>
   );
