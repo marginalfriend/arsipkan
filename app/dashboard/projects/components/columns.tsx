@@ -119,9 +119,9 @@ function ActionsButton({ projectId }: { projectId: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem>
-          <Link href={`${path}/${projectId}`}>Lihat Detail</Link>
-        </DropdownMenuItem>
+        <Link href={`${path}/${projectId}`}>
+          <DropdownMenuItem>Lihat Detail</DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>Buat Kwitansi & Invoice</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

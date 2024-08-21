@@ -7,7 +7,9 @@ function ProjectDetail({ params }: { params: { id: string } }) {
     (project) => project.id === params.id
   );
 
-  return <div>{projectDetail?.name}</div>;
+  return (<main className="flex flex-col w-full h-full">
+		<h1>{projectDetail?.name}</h1>
+	</main>);
 }
 
 export default ProjectDetail;
