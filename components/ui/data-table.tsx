@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
   ColumnFilter,
   ColumnFiltersState,
   flexRender,
@@ -23,7 +22,6 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
-import { ArrowUpDown } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: any;

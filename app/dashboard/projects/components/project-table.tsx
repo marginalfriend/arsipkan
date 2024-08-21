@@ -40,16 +40,79 @@ function ProjectTable() {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col-reverse lg:flex-row justify-between items-end gap-2">
         <div className="flex gap-2">
-          <DeveloperFilter
-            handleFilterChange={handleFilterChange}
-            developers={developers}
-            filter={filter}
-          />
-          <CompanyFilter
-            filter={filter}
-            handleFilterChange={handleFilterChange}
-            companies={companies}
-          />
+					
+          {/* Developer filter selector */}
+          <Select
+            value={filter.id === "developer" ? (filter.value as string) : ""}
+            onValueChange={(value) =>
+              handleFilterChange({
+                id: "developer",
+                value,
+              })
+            }
+          >
+            <SelectTrigger
+              className="w-[180px] px-0 p-1"
+              title="Developer filter dropdown"
+            >
+              <SelectValue
+                className="px-0 text-start"
+                placeholder={
+                  <span className="flex gap-2 items-center text-muted-foreground">
+                    <Filter className="ml-2 w-4 h-4" /> Developer
+                  </span>
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {developers.map((developer) => (
+                <SelectItem
+                  className="text-start"
+                  value={developer}
+                  key={developer}
+                >
+                  {capitalizeWords(developer)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Company filter selector */}
+          <Select
+            value={filter.id === "company" ? (filter.value as string) : ""}
+            onValueChange={(value) =>
+              handleFilterChange({
+                id: "company",
+                value,
+              })
+            }
+          >
+            <SelectTrigger
+              className="w-[180px] px-1 justify-between"
+              title="Company filter dropdown"
+            >
+              <SelectValue
+                className="px-0 text-start"
+                placeholder={
+                  <span className="flex gap-2 items-center text-muted-foreground">
+                    <Filter className="ml-2 w-4 h-4" /> Perusahaan / PT
+                  </span>
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {companies.map((company) => (
+                <SelectItem
+                  className="text-start"
+                  value={company}
+                  key={company}
+                >
+                  {capitalizeWords(company)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
         </div>
         <Button className="flex gap-2 w-full lg:w-fit">
           <Plus className="w-4 h-4" /> Projek Baru
@@ -71,89 +134,3 @@ function ProjectTable() {
 }
 
 export default ProjectTable;
-
-function DeveloperFilter({
-  handleFilterChange,
-  filter,
-  developers,
-}: {
-  handleFilterChange: (filter: ColumnFilter) => void;
-  filter: ColumnFilter;
-  developers: string[];
-}) {
-  return (
-    <Select
-      value={filter.id === "developer" ? (filter.value as string) : ""}
-      onValueChange={(value) =>
-        handleFilterChange({
-          id: "developer",
-          value,
-        })
-      }
-    >
-      <SelectTrigger
-        className="w-[180px] px-0 p-1"
-        title="Developer filter dropdown"
-      >
-        <SelectValue
-          className="px-0 text-start"
-          placeholder={
-            <span className="flex gap-2 items-center text-muted-foreground">
-              <Filter className="ml-2 w-4 h-4" /> Developer
-            </span>
-          }
-        />
-      </SelectTrigger>
-      <SelectContent>
-        {developers.map((developer) => (
-          <SelectItem className="text-start" value={developer} key={developer}>
-            {capitalizeWords(developer)}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
-
-function CompanyFilter({
-  handleFilterChange,
-  filter,
-  companies,
-}: {
-  handleFilterChange: (filter: ColumnFilter) => void;
-  filter: ColumnFilter;
-  companies: string[];
-}) {
-  return (
-    <Select
-      value={filter.id === "company" ? (filter.value as string) : ""}
-      onValueChange={(value) =>
-        handleFilterChange({
-          id: "company",
-          value,
-        })
-      }
-    >
-      <SelectTrigger
-        className="w-[180px] px-1 justify-between"
-        title="Company filter dropdown"
-      >
-        <SelectValue
-          className="px-0 text-start"
-          placeholder={
-            <span className="flex gap-2 items-center text-muted-foreground">
-              <Filter className="ml-2 w-4 h-4" /> Perusahaan / PT
-            </span>
-          }
-        />
-      </SelectTrigger>
-      <SelectContent>
-        {companies.map((company) => (
-          <SelectItem className="text-start" value={company} key={company}>
-            {capitalizeWords(company)}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}

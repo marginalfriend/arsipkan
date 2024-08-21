@@ -15,8 +15,8 @@ datasource db {
 
 model Developer {
   id        String    @id @default(uuid())
-  name      String
   folder_id String
+  name      String
   Companies Company[]
 }
 
@@ -40,7 +40,7 @@ model Project {
   value          Int
   date           DateTime
   folder_id      String
-  Bill           Bill[]	
+  Bill           Bill[]
   BudgetProposal BudgetProposal?
   ShopDrawing    ShopDrawing?
   company_id     String
@@ -74,22 +74,13 @@ model SPK {
   doc_id     String
 }
 
-model Employee {
-  id   Int    @id @default(autoincrement())
-  name String
-  Bill Bill[]
-}
-
 model Bill {
   id               String           @id @default(uuid())
   bill_sequence    Int              @default(autoincrement())
   receipt_sequence Int              @default(autoincrement())
-  issuer_id        Int
-  issuer           Employee         @relation(fields: [issuer_id], references: [id])
   date             DateTime         @default(now())
   amount           Int
   vat              Int
-  receiver         String
   project_id       String
   project          Project          @relation(fields: [project_id], references: [id])
   SignedInvoice    SignedInvoice[]
