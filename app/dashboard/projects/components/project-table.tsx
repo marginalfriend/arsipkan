@@ -2,7 +2,8 @@
 
 import { DataTable } from "@/components/ui/data-table";
 import React, { useEffect, useState } from "react";
-import { columns, companies, developers, projectData } from "./columns";
+import { columns } from "./columns";
+import { companies, developers, projectData } from "../dummy-data";
 import { capitalizeWords, formatIDR } from "@/lib/utils";
 import {
   Select,
@@ -40,7 +41,6 @@ function ProjectTable() {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col-reverse lg:flex-row justify-between items-end gap-2">
         <div className="flex gap-2">
-					
           {/* Developer filter selector */}
           <Select
             value={filter.id === "developer" ? (filter.value as string) : ""}
@@ -68,10 +68,10 @@ function ProjectTable() {
               {developers.map((developer) => (
                 <SelectItem
                   className="text-start"
-                  value={developer}
-                  key={developer}
+                  value={developer.name}
+                  key={developer.id}
                 >
-                  {capitalizeWords(developer)}
+                  {capitalizeWords(developer.name)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -104,15 +104,14 @@ function ProjectTable() {
               {companies.map((company) => (
                 <SelectItem
                   className="text-start"
-                  value={company}
-                  key={company}
+                  value={company.name}
+                  key={company.id}
                 >
-                  {capitalizeWords(company)}
+                  {capitalizeWords(company.name)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-
         </div>
         <Button className="flex gap-2 w-full lg:w-fit">
           <Plus className="w-4 h-4" /> Projek Baru

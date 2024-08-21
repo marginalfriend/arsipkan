@@ -11,7 +11,6 @@ import {
 import { dateFormatter, formatIDR } from "@/lib/utils";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
 
 export type ProjectColumns = {
   id: string;
@@ -70,69 +69,25 @@ export const columns = [
   }),
 ];
 
-export const projectData: ProjectColumns[] = [
-  {
-    id: uuidv4(),
-		name: "Green Hills Residence",
-    developer: "Indo Property Group",
-    company: "PT Sinar Jaya Abadi",
-    date: new Date("2023-02-15"),
-    value: 50000000000,
-    receivable: 10000000000,
-  },
-  {
-    id: uuidv4(),
-		name: "Ocean View Apartments",
-    developer: "Nusantara Development",
-    company: "PT Cahaya Nusantara",
-    date: new Date("2022-10-30"),
-    value: 75000000000,
-    receivable: 25000000000,
-  },
-  {
-    id: uuidv4(),
-		name: "Sunset Valley",
-    developer: "Mega Property Holdings",
-    company: "PT Surya Agung",
-    date: new Date("2023-06-12"),
-    value: 65000000000,
-    receivable: 15000000000,
-  },
-  {
-    id: uuidv4(),
-		name: "Skyline Tower",
-    developer: "Urban Builders",
-    company: "PT Gemilang Konstruksi",
-    date: new Date("2023-03-21"),
-    value: 80000000000,
-    receivable: 30000000000,
-  },
-  {
-    id: uuidv4(),
-		name: "Lakeside Villas",
-    developer: "Harmony Development",
-    company: "PT Sejahtera Mandiri",
-    date: new Date("2022-12-05"),
-    value: 60000000000,
-    receivable: 20000000000,
-  },
-];
+export type ProjectTable = {
+  id: string; // Unique ID for the project
+  name: string; // Project name
+  developer: string; // Real estate developer (UUID)
+  company: string; // PT (Perseroan Terbatas) working on this project (UUID)
+  date: Date; // Agreement date
+  value: number; // Value of the project
+  receivable: number; // Unpaid value
+};
 
-export const developers: string[] = [
-  "Indo Property Group",
-  "Nusantara Development",
-  "Mega Property Holdings",
-  "Urban Builders",
-  "Harmony Development",
-];
+export type Developer = {
+  id: string;
+  name: string;
+};
 
-export const companies: string[] = [
-  "PT Sinar Jaya Abadi",
-  "PT Cahaya Nusantara",
-  "PT Surya Agung",
-  "PT Gemilang Konstruksi",
-  "PT Sejahtera Mandiri",
-];
+export type Company = {
+  id: string;
+  name: string;
+};
 
 
 function SortingButton({ column, label }: { column: any; label: string }) {
