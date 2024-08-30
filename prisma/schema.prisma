@@ -15,7 +15,6 @@ datasource db {
 
 model Developer {
   id        String    @id @default(uuid())
-  folder_id String
   name      String
   Companies Company[]
 }
@@ -23,7 +22,6 @@ model Developer {
 model Company {
   id           String    @id @default(uuid())
   name         String
-  folder_id    String
   developer_id String
   developer    Developer @relation(fields: [developer_id], references: [id])
   Project      Project[]
