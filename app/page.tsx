@@ -1,7 +1,7 @@
 import AuthButton from "@/components/auth-button";
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function WelcomePage() {
   return (
     <main className="flex flex-col h-screen w-screen">
       <div className="flex flex-col w-screen h-screen items-center justify-center gap-4">

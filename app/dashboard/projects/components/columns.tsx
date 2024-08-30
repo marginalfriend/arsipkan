@@ -22,6 +22,7 @@ export type ProjectColumns = {
   date: Date;
   value: number;
   receivable: number;
+  location: string;
 };
 
 const columnHelper = createColumnHelper<ProjectColumns>();
@@ -32,41 +33,57 @@ export const columns = [
     header: ({ column }) => (
       <SortingButton column={column} label={"Developer"} />
     ),
-    cell: ({ row }) => row.original.developer.name,
+    cell: ({ row }) => (
+      <span className="text-xs">{row.original.developer.name}</span>
+    ),
   }),
   columnHelper.accessor("company", {
     id: "company",
     header: ({ column }) => (
       <SortingButton column={column} label={"Perusahaan / PT"} />
     ),
-    cell: ({ row }) => row.original.company.name,
+    cell: ({ row }) => (
+      <span className="text-xs">{row.original.company.name}</span>
+    ),
   }),
   columnHelper.accessor("name", {
     id: "name",
     header: ({ column }) => (
       <SortingButton column={column} label={"Nama Projek"} />
     ),
+    cell: ({ row }) => <span className="text-xs">{row.getValue("name")}</span>,
+  }),
+  columnHelper.accessor("location", {
+    id: "location",
+    header: ({ column }) => <SortingButton column={column} label={"Lokasi"} />,
+    cell: ({ row }) => <span className="text-xs">{row.original.location}</span>,
   }),
   columnHelper.accessor("date", {
     id: "date",
     header: ({ column }) => (
       <SortingButton column={column} label={"Tanggal SPK"} />
     ),
-    cell: (info) => dateFormatter(info.getValue()),
+    cell: (info) => (
+      <span className="text-xs">{dateFormatter(info.getValue())}</span>
+    ),
   }),
   columnHelper.accessor("value", {
     id: "value",
     header: ({ column }) => (
       <SortingButton column={column} label={"Nilai Projek"} />
     ),
-    cell: (info) => formatIDR(info.getValue()),
+    cell: (info) => (
+      <span className="text-xs">{formatIDR(info.getValue())}</span>
+    ),
   }),
   columnHelper.accessor("receivable", {
     id: "receivable",
     header: ({ column }) => (
       <SortingButton column={column} label={"Jumlah Piutang"} />
     ),
-    cell: (info) => formatIDR(info.getValue()),
+    cell: (info) => (
+      <span className="text-xs">{formatIDR(info.getValue())}</span>
+    ),
   }),
   columnHelper.display({
     id: "actions",
@@ -83,6 +100,7 @@ export type ProjectTable = {
   date: Date; // Agreement date
   value: number; // Value of the project
   receivable: number; // Unpaid value
+  location: string; // Location of the project
 };
 
 export type Developer = {

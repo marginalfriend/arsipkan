@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Provider } from "./provider";
 import { Header } from "@/components/header";
 import { Toaster } from "@/components/ui/toaster";
-import SideBar from "@/components/sidebar";
 
 const plus_jakarta_sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
