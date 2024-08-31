@@ -15,6 +15,7 @@ import {
 import { Filter, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ColumnFilter } from "@tanstack/react-table";
+import { CreateProjectForm } from "./components/create-project-form";
 
 function DashboardHomePage() {
   const [totalValue, setTotalValue] = useState(0);
@@ -115,9 +116,7 @@ function DashboardHomePage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="flex gap-2 w-full lg:w-fit">
-            <Plus className="w-4 h-4" /> Projek Baru
-          </Button>
+          <CreateProjectForm />
           <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-fit lg:justify-end">
             <div className="flex flex-col px-4 py-4 border rounded w-full lg:w-fit">
               <h1 className="font-bold text-xl">Total Nilai</h1>

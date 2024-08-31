@@ -25,7 +25,7 @@ export const selectOrCreateCompany = async (
   company_name: string,
   developer_id: string
 ) => {
-  const company = await prisma.company.findUnique({
+  const company = await prisma.company.findFirst({
     where: {
       name: company_name,
     },
@@ -45,7 +45,7 @@ export const selectOrCreateCompany = async (
 };
 
 export const createNewProject = async (formData: FormData) => {
-  const { project_name, value, date, company_id, location } = formData;
+//   const { project_name, value, date, company_id, location } = formData;
 
   // 1.
 };
