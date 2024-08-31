@@ -54,11 +54,12 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     setColumnFilters([filter]);
+    console.log(columnFilters);
   }, [filter]);
 
   return (
     <div>
-      <div className="rounded-md border w-full over overflow-x-scroll">
+      <div className="rounded-md border w-full">
         <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -28,7 +28,7 @@ export type ProjectColumns = {
 const columnHelper = createColumnHelper<ProjectColumns>();
 
 export const columns = [
-  columnHelper.accessor("developer", {
+  columnHelper.accessor("developer.name", {
     id: "developer",
     header: ({ column }) => (
       <SortingButton column={column} label={"Developer"} />
@@ -37,7 +37,7 @@ export const columns = [
       <span className="text-xs">{row.original.developer.name}</span>
     ),
   }),
-  columnHelper.accessor("company", {
+  columnHelper.accessor("company.name", {
     id: "company",
     header: ({ column }) => (
       <SortingButton column={column} label={"Perusahaan / PT"} />

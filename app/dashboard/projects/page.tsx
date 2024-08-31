@@ -13,11 +13,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ColumnFilter } from "@tanstack/react-table";
 import { CreateProjectForm } from "./components/create-project-form";
 
-function DashboardHomePage() {
+function ProjectsPage() {
   const [totalValue, setTotalValue] = useState(0);
   const [totalReceivable, setTotalReceivable] = useState(0);
   const [filter, setFilter] = useState<ColumnFilter>({
@@ -134,4 +133,4 @@ function DashboardHomePage() {
   );
 }
 
-export default DashboardHomePage;
+export default ProjectsPage;

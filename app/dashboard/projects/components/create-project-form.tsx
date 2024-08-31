@@ -22,8 +22,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/date-picker";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 const FormSchema = z.object({
+  spkDocument: z.string(),
   company: z.string(),
   spkNumber: z.string(),
   clientName: z.string(),
@@ -34,7 +36,7 @@ const FormSchema = z.object({
 });
 
 type ProjectFormField = {
-  name: "spkNumber" | "projectName" | "value" | "clientName";
+  name: "spkNumber" | "projectName" | "value" | "clientName" | "spkDocument";
   type: string;
   label: string;
   placeHolder: string;
@@ -42,11 +44,12 @@ type ProjectFormField = {
 };
 
 export function CreateProjectForm() {
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      spkDocument: "",
       spkNumber: "",
       clientName: "",
       projectName: "",
@@ -62,6 +65,13 @@ export function CreateProjectForm() {
       label: "Nomor SPK",
       placeHolder: "XXXX/XX/XXX/XXX/XXX",
       description: "Nomor SPK sesuai dengan client",
+    },
+    {
+      name: "spkDocument",
+      type: "file",
+      label: "Dokumen SPK",
+      placeHolder: "Pilih file",
+      description: "Dokumen SPK sesuai dengan projek",
     },
     {
       name: "projectName",
